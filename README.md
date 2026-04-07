@@ -2,9 +2,6 @@
   <img width="192" src="apps/web/public/icons/icon-192.png" alt="Logo SimuladorÁgil">
   <h1>Simulador<b>Ágil</b></h1>
   <p>Simulador inteligente que gera simulados personalizados do ENEM</p>
-  <a href="https://github.com/sponsors/DaniDMoura">
-    <img src="https://img.shields.io/badge/sponsor-30363D?style=for-the-badge&logo=GitHub-Sponsors&logoColor=#EA4AAA" alt="Sponsor">
-  </a>
   <a href="https://www.instagram.com/danilosmoura_/" target="_blank">
     <img src="https://img.shields.io/badge/Instagram-Follow_@danilosmoura_-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram">
   </a>
@@ -31,7 +28,6 @@ simulador-agil/
 ├── scripts/
 │   └── setup.sh      # Script de configuração automática
 ├── docker-compose.yml
-├── .env.example
 ├── README.md
 └── LICENSE
 ```
@@ -57,7 +53,7 @@ simulador-agil/
 
 ---
 
-## ⚙️ Arquitetura e Tecnologias
+## Arquitetura e Tecnologias
 
 ### Backend (API)
 
