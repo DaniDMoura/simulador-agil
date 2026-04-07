@@ -187,7 +187,7 @@ function App() {
     if (timeLeft.hours > 0) parts.push(`${timeLeft.hours} horas`);
     if (timeLeft.minutes > 0) parts.push(`${timeLeft.minutes} minutos`);
 
-    return `Faltam ${parts.join(', ')} para o ENEM 2025`;
+    return `Faltam ${parts.join(', ')} para o ENEM 2026`;
   };
 
   return (
