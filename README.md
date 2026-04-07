@@ -1,6 +1,5 @@
-
 <div align="center">
-  <img width="192" src="frontend/public/icons/icon-192.png" alt="Logo SimuladorÁgil">
+  <img width="192" src="apps/web/public/icons/icon-192.png" alt="Logo SimuladorÁgil">
   <h1>Simulador<b>Ágil</b></h1>
   <p>Simulador inteligente que gera simulados personalizados do ENEM</p>
   <a href="https://github.com/sponsors/DaniDMoura">
@@ -16,13 +15,30 @@
 
 ---
 
-## ✨ Sobre o Projeto
+## Sobre o Projeto
 
 O **SimuladorÁgil** é um simulador inteligente que gera simulados personalizados do ENEM em tempo real. O objetivo é proporcionar uma experiência de preparação otimizada, oferecendo questões adaptadas ao desempenho e às preferências do usuário, além de relatórios detalhados para acompanhamento do progresso.
 
 ---
 
-## 📋 Índice
+## Estrutura do Projeto
+
+```
+simulador-agil/
+├── apps/
+│   ├── api/          # Backend (FastAPI)
+│   └── web/          # Frontend (React + Vite)
+├── scripts/
+│   └── setup.sh      # Script de configuração automática
+├── docker-compose.yml
+├── .env.example
+├── README.md
+└── LICENSE
+```
+
+---
+
+## Índice
 
 - [Demonstração](#demonstração)
 - [Arquitetura e Tecnologias](#arquitetura-e-tecnologias)
@@ -35,10 +51,9 @@ O **SimuladorÁgil** é um simulador inteligente que gera simulados personalizad
 
 ---
 
-## 🚀 Demonstração
+## Demonstração
 
 - Acesse a versão online: [https://simulado.site](https://simulado.site)
-- Veja exemplos de uso nas imagens abaixo (adicione prints ou gifs aqui, se possível)
 
 ---
 
@@ -64,7 +79,7 @@ O **SimuladorÁgil** é um simulador inteligente que gera simulados personalizad
 
 ---
 
-## 📝 Funcionalidades
+##  Funcionalidades
 
 - **Simulados Personalizados:** Geração dinâmica com base no desempenho e preferências do usuário
 - **Banco de Questões do ENEM:** Utiliza questões reais e/ou simuladas no formato oficial
@@ -74,44 +89,42 @@ O **SimuladorÁgil** é um simulador inteligente que gera simulados personalizad
 
 ---
 
-## 🖥️ Como Usar
+## Como Usar
 
 ### 1. Versão Online
 
 Acesse diretamente pelo navegador: [https://simulado.site](https://simulado.site)
 
-### 2. Executar Localmente (sem Docker)
+### 2. Executar Localmente
 
 #### Pré-requisitos
 
 - [Node.js](https://nodejs.org/) (>= v16)
 - [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
+- [Python 3](https://www.python.org/) (>= 3.13)
+- [Poetry](https://python-poetry.org/) (recomendado)
 
-#### Instalação
+#### Instalação Rápida
 
 ```bash
 # Clone o repositório
 git clone https://github.com/DaniDMoura/SimuladorAgil.git
-
-# Acesse a pasta do projeto
 cd SimuladorAgil
 
-# Navegue até o diretório do frontend
-cd client
-
-# Instale as dependências
-npm install
-# ou
-yarn install
+# Execute o script de setup
+bash scripts/setup.sh
 ```
 
 #### Executando o projeto
 
 ```bash
-# Inicie o servidor de desenvolvimento
+# Terminal 1 - API
+cd apps/api
+poetry run uvicorn simulado_gen.main:app --reload
+
+# Terminal 2 - Web
+cd apps/web
 npm run dev
-# ou
-yarn dev
 ```
 
 Abra [http://localhost:5173](http://localhost:5173) no navegador para visualizar o projeto.
@@ -120,11 +133,11 @@ Abra [http://localhost:5173](http://localhost:5173) no navegador para visualizar
 
 Por padrão, o frontend está configurado para consumir a API hospedada em: [https://api-simulado-generator.onrender.com](https://api-simulado-generator.onrender.com)
 
-Se quiser rodar o backend localmente, consulte o README da pasta [`backend`](backend/README.md).
+Se quiser rodar o backend localmente, consulte o README da pasta [`apps/api`](apps/api/README.md).
 
 ---
 
-## 🐳 Como rodar com Docker
+## Como rodar com Docker
 
 ### 1. Pré-requisitos
 
@@ -132,19 +145,13 @@ Se quiser rodar o backend localmente, consulte o README da pasta [`backend`](bac
 
 ### 2. Rodando com Docker Compose
 
-O projeto já possui arquivos `Dockerfile` e um `docker-compose.yml` para facilitar a execução de todo o sistema (frontend e backend).
-
-#### Passos:
-
 ```bash
 # Clone o repositório
 git clone https://github.com/DaniDMoura/SimuladorAgil.git
-
-# Acesse a pasta do projeto
 cd SimuladorAgil
 
 # Execute o docker compose
-docker-compose up --build
+docker compose up --build
 ```
 
 #### O que acontece?
@@ -152,20 +159,17 @@ docker-compose up --build
 - O Docker irá construir imagens para o frontend e backend automaticamente.
 - Os containers serão iniciados:
   - O frontend estará disponível em: [http://localhost](http://localhost)
-  - O backend estará disponível em: [http://localhost:8000](http://localhost:8000) (ou na porta configurada no docker-compose)
-- O frontend já estará configurado para consumir a API do backend local.
+  - O backend estará disponível em: [http://localhost:8000](http://localhost:8000)
 
 #### Parando os containers
 
-Para parar os containers, use:
-
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ---
 
-## 🤝 Como Contribuir
+## Como Contribuir
 
 1. Faça um fork do projeto
 2. Crie uma branch para sua feature/correção (`git checkout -b feature/minha-feature`)
@@ -177,13 +181,13 @@ Consulte as [issues](https://github.com/DaniDMoura/SimuladorAgil/issues) para ve
 
 ---
 
-## 📄 Licença
+## Licença
 
 Distribuído sob a Licença GNU General Public License v3.0. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
 
 ---
 
-## 📬 Contato
+## Contato
 
 - **Desenvolvedor:** [@DaniDMoura](https://github.com/DaniDMoura)
 - **Suporte:** Dúvidas, sugestões ou feedback? Abra uma [issue](https://github.com/DaniDMoura/SimuladorAgil/issues).
