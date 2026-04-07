@@ -118,7 +118,7 @@ function App() {
   const [minYear, setMinYear] = useState(2010)
   const [maxYear, setMaxYear] = useState(2023)
 
-  const targetDate = new Date('2025-11-09T13:30:00').getTime();
+  const targetDate = new Date('2026-11-08T13:30:00').getTime();
 
   const mutation = useMutation({
     mutationFn: fetchUsers,
