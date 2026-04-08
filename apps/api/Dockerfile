@@ -1,17 +1,14 @@
-FROM python:3.13-slim
+FROM gradle:9.4.1-jdk25-alpine AS BUILD
 
 WORKDIR /app
+COPY build.gradle settings.gradle ./
 
-RUN apt-get update && apt-get install -y curl build-essential && apt-get clean
+COPY src ./src
+RUN gradle bootJar 
 
-RUN curl -sSL https://install.python-poetry.org | python3 -
+FROM eclipse-temurin:25-jre-alpine
 
-ENV PATH="/root/.local/bin:$PATH"
+COPY --from=build /app/build/libs/api-1.0.jar api.jar
 
-COPY pyproject.toml poetry.lock ./
-RUN poetry config virtualenvs.create false \
- && poetry install --no-root --no-interaction --no-ansi
-
-COPY . .
-
-CMD ["uvicorn", "simulado_gen.main:app", "--host", "0.0.0.0", "--port", "8000"]
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "api.jar"]
