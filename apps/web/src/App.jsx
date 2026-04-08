@@ -69,7 +69,7 @@ const frases = [
 ];
 
 const fetchUsers = async ({
-  number,
+  numero,
   cienciasNatureza,
   matematica,
   linguagens,
@@ -77,18 +77,16 @@ const fetchUsers = async ({
   minYear,
   maxYear
 }) => {
-  const res = await axios.get(
-    "backend/api/v1/gerar_simulado",
+  const res = await axios.post(
+    "/api/questions",
     {
-      params: {
-        numero: number,
-        ciencias_natureza: cienciasNatureza,
-        matematica: matematica,
-        linguagens: linguagens,
-        ciencias_humanas: cienciasHumanas,
-        min_year: minYear,
-        max_year: maxYear
-      },
+      numero: numero,
+      minYear: minYear,
+      maxYear: maxYear,
+      enableCienciasNatureza: cienciasNatureza,
+      enableCienciasHumanas: cienciasHumanas,
+      enableLinguagens: linguagens,
+      enableMatematica: matematica
     }
   );
   return res.data;
