@@ -23,7 +23,7 @@ O **SimuladorÁgil** é um simulador inteligente que gera simulados personalizad
 ```
 simulador-agil/
 ├── apps/
-│   ├── api/          # Backend (FastAPI)
+│   ├── api/          # Backend (Java/Spring Boot)
 │   └── web/          # Frontend (React + Vite)
 ├── scripts/
 │   └── setup.sh      # Script de configuração automática
@@ -57,10 +57,11 @@ simulador-agil/
 
 ### Backend (API)
 
-- **Linguagem:** Python
-- **Framework:** FastAPI
-- **Hospedagem:** [Render](https://api-simulado-generator.onrender.com)
-- **Documentação da API:** [Swagger/OpenAPI](https://api-simulado-generator.onrender.com/docs)
+- **Linguagem:** Java
+- **Framework:** Spring Boot 4.0
+- **Build Tool:** Gradle
+- **Cache:** Redis
+- **Segurança:** Spring Security com Rate Limiting
 
 ### Frontend
 
@@ -97,8 +98,8 @@ Acesse diretamente pelo navegador: [https://simulado.site](https://simulado.site
 
 - [Node.js](https://nodejs.org/) (>= v16)
 - [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
-- [Python 3](https://www.python.org/) (>= 3.13)
-- [Poetry](https://python-poetry.org/) (recomendado)
+- [Java](https://www.oracle.com/java/technologies/downloads/) (>= 25)
+- [Gradle](https://gradle.org/) (ou usar gradlew incluso)
 
 #### Instalação Rápida
 
@@ -114,9 +115,9 @@ bash scripts/setup.sh
 #### Executando o projeto
 
 ```bash
-# Terminal 1 - API
+# Terminal 1 - API (Java/Spring Boot)
 cd apps/api
-poetry run uvicorn simulado_gen.main:app --reload
+./gradlew bootRun
 
 # Terminal 2 - Web
 cd apps/web
@@ -127,9 +128,11 @@ Abra [http://localhost:5173](http://localhost:5173) no navegador para visualizar
 
 #### Configuração da API
 
-Por padrão, o frontend está configurado para consumir a API hospedada em: [https://api-simulado-generator.onrender.com](https://api-simulado-generator.onrender.com)
+O backend precisa do Redis para funcionar. Você pode usar Docker:
 
-Se quiser rodar o backend localmente, consulte o README da pasta [`apps/api`](apps/api/README.md).
+```bash
+docker run -d -p 6379:6379 redis:alpine
+```
 
 ---
 
@@ -155,7 +158,7 @@ docker compose up --build
 - O Docker irá construir imagens para o frontend e backend automaticamente.
 - Os containers serão iniciados:
   - O frontend estará disponível em: [http://localhost](http://localhost)
-  - O backend estará disponível em: [http://localhost:8000](http://localhost:8000)
+  - O backend estará disponível em: [http://localhost:8080](http://localhost:8080)
 
 #### Parando os containers
 
