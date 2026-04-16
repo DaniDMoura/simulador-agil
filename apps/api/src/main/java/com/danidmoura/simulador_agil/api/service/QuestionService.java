@@ -24,7 +24,7 @@ public class QuestionService {
 
     @Cacheable(
             value = "questions",
-            key = "T(java.util.Objects).hash(#questionsRequest.number, #questionsRequest.minYear, #questionsRequest.maxYear, #questionsRequest.enableCienciasNatureza, #questionsRequest.enableCienciasHumanas, #questionsRequest.enableLinguagens, #questionsRequest.enableMatematica)"
+            key = "T(java.util.Objects).hash(#req.number, #req.minYear, #req.maxYear, #req.enableCienciasNatureza, #req.enableCienciasHumanas, #req.enableLinguagens, #req.enableMatematica)"
     )
     public List<QuestionResponse> getQuestions(QuestionRequest req) {
         List<String> subjects = getEnabledSubjects(req);
