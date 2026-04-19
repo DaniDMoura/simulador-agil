@@ -1,8 +1,12 @@
 package com.danidmoura.simulador_agil.api.dto;
 
+import lombok.Builder;
+import lombok.Singular;
+
 import java.io.Serializable;
 import java.util.List;
 
+@Builder
 public record QuestionResponse (
         String title,
         String discipline,
@@ -11,6 +15,6 @@ public record QuestionResponse (
         String context,
         List<String> files,
         String alternativesIntroduction,
-        List<AlternativeResponse> alternatives
+        @Singular List<AlternativeResponse> alternatives
 ) implements Serializable {
 }

@@ -4,7 +4,9 @@ import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
+@Builder
 public record QuestionRequest (
         @NotNull
         @Min(value = 1)
@@ -17,7 +19,7 @@ public record QuestionRequest (
         Integer minYear,
 
         @NotNull
-        @Min(value = 2010)
+        @Min(value = 2008)
         @Max(value = 2023)
         Integer maxYear,
 

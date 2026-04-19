@@ -2,8 +2,8 @@ package com.danidmoura.simulador_agil.api.controller;
 
 import com.danidmoura.simulador_agil.api.dto.AlternativeResponse;
 import com.danidmoura.simulador_agil.api.dto.QuestionRequest;
-import com.danidmoura.simulador_agil.api.dto.QuestionResponse;
 import com.danidmoura.simulador_agil.api.service.QuestionService;
+import com.danidmoura.simulador_agil.api.dto.QuestionResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
