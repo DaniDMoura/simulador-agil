@@ -14,7 +14,7 @@
 
 ## Sobre o Projeto
 
-O **SimuladorÁgil** é um simulador inteligente que gera simulados personalizados do ENEM em tempo real. O objetivo é proporcionar uma experiência de preparação otimizada, oferecendo questões adaptadas ao desempenho e às preferências do usuário, além de relatórios detalhados para acompanhamento do progresso.
+O **SimuladorÁgil** é um simulador inteligente que gera simulados personalizados do ENEM em tempo real. O objetivo é proporcionar uma experiência de preparação otimizada, oferecendo questões adaptadas ao desempenho e às preferências do usuário, com foco em uma experiência visual moderna e profissional.
 
 ---
 
@@ -23,8 +23,8 @@ O **SimuladorÁgil** é um simulador inteligente que gera simulados personalizad
 ```
 simulador-agil/
 ├── apps/
-│   ├── api/          # Backend (Java/Spring Boot)
-│   └── web/          # Frontend (React + Vite)
+│   ├── api/          # Backend (Java/Spring Boot 4.0)
+│   └── web/          # Frontend (React + Vite + Vitest)
 ├── scripts/
 │   └── setup.sh      # Script de configuração automática
 ├── docker-compose.yml
@@ -57,32 +57,33 @@ simulador-agil/
 
 ### Backend (API)
 
-- **Linguagem:** Java
+- **Linguagem:** Java (JDK 25)
 - **Framework:** Spring Boot 4.0
-- **Build Tool:** Gradle
+- **Resiliência:** Spring Retry para chamadas de integração
 - **Cache:** Redis
-- **Segurança:** Spring Security com Rate Limiting
+- **Segurança:** Spring Security com Rate Limiting e RFC 7807 (Problem Details)
 
 ### Frontend
 
 - **Linguagem:** JavaScript
-- **Framework:** React
+- **Framework:** React 19
 - **Build Tool:** Vite
-- **Estilização:** CSS3
+- **Testes:** Vitest + React Testing Library
 - **Principais Bibliotecas:**
-  - **axios:** requisições HTTP à API
-  - **react-query:** gerenciamento de dados assíncronos
-  - **@react-pdf/renderer:** geração dinâmica de relatórios PDF
+  - **axios:** requisições HTTP
+  - **tanstack/react-query:** gerenciamento de estado assíncrono
+  - **@react-pdf/renderer:** geração dinâmica de PDF
+  - **marked:** renderização robusta de Markdown para questões
 
 ---
 
 ##  Funcionalidades
 
-- **Simulados Personalizados:** Geração dinâmica com base no desempenho e preferências do usuário
-- **Banco de Questões do ENEM:** Utiliza questões reais e/ou simuladas no formato oficial
-- **Relatórios em PDF:** Exportação de desempenho detalhado
-- **Feedback em Tempo Real:** Correção imediata com análise de acertos, erros e sugestões de melhoria
-- **Interface Responsiva:** Design intuitivo adaptado para dispositivos móveis e desktop
+- **Simulados Personalizados:** Geração dinâmica com base em filtros de ano e área de conhecimento.
+- **Banco de Questões do ENEM:** Utiliza questões reais do ENEM com renderização nativa de Markdown e imagens.
+- **Relatórios em PDF Profissionais:** Exportação com layout otimizado em 2 colunas para impressão.
+- **Feedback de Erro Detalhado:** Sistema de tratamento de erros baseado no padrão RFC 7807 para mensagens claras de validação.
+- **Interface Moderna:** Design UX focado em produtividade com sistema de tipografia dual-font (Serif/Sans-serif).
 
 ---
 
@@ -96,10 +97,9 @@ Acesse diretamente pelo navegador: [https://simulado.site](https://simulado.site
 
 #### Pré-requisitos
 
-- [Node.js](https://nodejs.org/) (>= v16)
-- [npm](https://www.npmjs.com/) ou [yarn](https://yarnpkg.com/)
+- [Node.js](https://nodejs.org/) (>= v20)
+- [npm](https://www.npmjs.com/)
 - [Java](https://www.oracle.com/java/technologies/downloads/) (>= 25)
-- [Gradle](https://gradle.org/) (ou usar gradlew incluso)
 
 #### Instalação Rápida
 
@@ -124,14 +124,11 @@ cd apps/web
 npm run dev
 ```
 
-Abra [http://localhost:5173](http://localhost:5173) no navegador para visualizar o projeto.
-
-#### Configuração da API
-
-O backend precisa do Redis para funcionar. Você pode usar Docker:
+#### Executando Testes
 
 ```bash
-docker run -d -p 6379:6379 redis:alpine
+# No diretório apps/web
+npm run test
 ```
 
 ---
@@ -145,51 +142,33 @@ docker run -d -p 6379:6379 redis:alpine
 ### 2. Rodando com Docker Compose
 
 ```bash
-# Clone o repositório
-git clone https://github.com/DaniDMoura/SimuladorAgil.git
-cd SimuladorAgil
-
-# Execute o docker compose
 docker compose up --build
 ```
 
-#### O que acontece?
-
-- O Docker irá construir imagens para o frontend e backend automaticamente.
-- Os containers serão iniciados:
-  - O frontend estará disponível em: [http://localhost](http://localhost)
-  - O backend estará disponível em: [http://localhost:8080](http://localhost:8080)
-
-#### Parando os containers
-
-```bash
-docker compose down
-```
+- **Frontend:** [http://localhost](http://localhost)
+- **Backend:** [http://localhost:8080](http://localhost:8080)
 
 ---
 
 ## Como Contribuir
 
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature/correção (`git checkout -b feature/minha-feature`)
-3. Faça commit das suas alterações (`git commit -m 'feat: adiciona nova funcionalidade'`)
-4. Faça push para a branch (`git push origin feature/minha-feature`)
-5. Abra um Pull Request
-
-Consulte as [issues](https://github.com/DaniDMoura/SimuladorAgil/issues) para ver sugestões, bugs reportados ou novas funcionalidades.
+1. Faça um fork do projeto.
+2. Crie uma branch para sua feature (`git checkout -b feature/minha-feature`).
+3. Siga o padrão **Conventional Commits**.
+4. Abra um Pull Request.
 
 ---
 
 ## Licença
 
-Distribuído sob a Licença GNU General Public License v3.0. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
+Distribuído sob a Licença MIT.
 
 ---
 
 ## Contato
 
 - **Desenvolvedor:** [@DaniDMoura](https://github.com/DaniDMoura)
-- **Suporte:** Dúvidas, sugestões ou feedback? Abra uma [issue](https://github.com/DaniDMoura/SimuladorAgil/issues).
+- **Suporte:** Abra uma [issue](https://github.com/DaniDMoura/SimuladorAgil/issues).
 
 ---
 
