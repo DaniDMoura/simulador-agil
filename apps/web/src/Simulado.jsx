@@ -1,116 +1,186 @@
+import React, { useMemo } from "react";
 import {
   Document,
   Page,
   Text,
   View,
   StyleSheet,
-  Image,
   Font
 } from "@react-pdf/renderer";
-import header from "/header.png";
-import gabarito from "/gabarito.png";
+import MarkdownRenderer from "./components/MarkdownRenderer";
 
 Font.register({
-  family: 'HelveticaCustom',
+  family: 'Helvetica',
   fonts: [
-    {
-      src: '/fonts/Helvetica.ttf'
-    },
-    {
-      src: '/fonts/Helvetica-Bold.ttf',
-      fontWeight: 'bold',
-    },
+    { src: '/fonts/Helvetica.ttf' },
+    { src: '/fonts/Helvetica-Bold.ttf', fontWeight: 'bold' }
   ]
 });
 
 const styles = StyleSheet.create({
   page: {
     paddingVertical: 15,
+    paddingHorizontal: 20,
     fontFamily: 'Helvetica',
-    fontSize: 11,
-    backgroundColor: '#fafafa'
+    fontSize: 9,
+    backgroundColor: '#ffffff'
   },
-  questionTitle: {
-    fontSize: 13,
-    fontWeight: "bold",
-    marginBottom: 8,
-    color: "#2c3e50",
-  },
-  context: {
-    fontSize: 10.5,
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    borderBottomWidth: 1,
+    borderBottomColor: '#000000',
+    paddingBottom: 4,
     marginBottom: 10,
-    lineHeight: 1.4,
-    color: '#34495e'
   },
-  alternativa: {
-    fontSize: 10.5,
-    flex: 1,
-    color: '#34495e',
-    marginLeft: 5
+  headerTitle: {
+    fontSize: 13,
+    fontWeight: 'bold',
   },
-  alternativeImage: {
-    maxWidth: 80,
-    maxHeight: 80,
-    marginLeft: 8
+  headerSubtitle: {
+    fontSize: 8.5,
+    color: '#444',
   },
-  image: {
-    maxHeight: 250,
-    maxWidth: 250,
-    marginTop: 10
+  // Stable 2-column structure
+  columnsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
   },
-  questionsContainer: {
-    paddingTop: 20,
-    paddingHorizontal: 40,
-    paddingBottom: 40,
+  column: {
+    width: '49%',
+    flexDirection: 'column',
   },
   questionContainer: {
-    marginBottom: 18
+    width: '100%',
+    marginBottom: 12,
+    paddingBottom: 6,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#f0f0f0',
+  },
+  questionTitle: {
+    fontSize: 9.5,
+    fontWeight: "bold",
+    marginBottom: 3,
+    color: "#000",
+  },
+  context: {
+    fontSize: 8.5,
+    marginBottom: 4,
+    lineHeight: 1.2,
+    color: '#111'
   },
   alternativesIntroduction: {
-    marginBottom: 10,
-    fontSize: 11,
+    marginBottom: 3,
+    fontSize: 8.5,
     fontWeight: 'bold',
-    color: "#2c3e50"
   },
   alternativeRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    marginBottom: 6,
+    marginBottom: 2,
+    paddingLeft: 4,
   },
   alternativeLetter: {
-    fontSize: 11,
     fontWeight: 'bold',
-    color: '#2c3e50',
-    marginRight: 8,
-    minWidth: 20
+    marginRight: 4,
+    width: 12,
+    fontSize: 8.5,
   },
   alternativeText: {
-    fontSize: 10.5,
-    color: '#34495e',
     flex: 1,
-    marginRight: 8
+    fontSize: 8.5,
+    lineHeight: 1.2,
   },
-  gabaritoContainer: {
-    marginTop: 20
+  gabaritoSection: {
+    marginTop: 15,
+    borderTopWidth: 1,
+    borderTopColor: '#000000',
+    paddingTop: 8,
   },
-  gabaritoAnswers: {
+  gabaritoTitle: {
+    fontSize: 11,
+    fontWeight: 'bold',
+    marginBottom: 6,
+    textAlign: 'center',
+  },
+  gabaritoGrid: {
     flexDirection: 'row',
-    gap: 10,
     flexWrap: 'wrap',
-    marginHorizontal: 20
+    justifyContent: 'flex-start',
   },
   gabaritoItem: {
-    fontSize: 10.5,
-    color: '#34495e'
+    width: '10%',
+    flexDirection: 'row',
+    marginBottom: 4,
+    fontSize: 8.5,
   },
-  gabaritoAnswer: {
-    fontWeight: 'bold'
+  gabaritoNumber: {
+    fontWeight: 'bold',
+    marginRight: 2,
   }
 });
 
+const SimuladoHeader = () => (
+  <View style={styles.headerContainer} fixed>
+    <View>
+      <Text style={styles.headerTitle}>Simulador Ágil</Text>
+      <Text style={styles.headerSubtitle}>Caderno de Questões - Exame Nacional</Text>
+    </View>
+    <View style={{ textAlign: 'right' }}>
+      <Text style={styles.headerSubtitle}>Data: {new Date().toLocaleDateString('pt-BR')}</Text>
+      <Text style={styles.headerSubtitle}>Folha de Respostas Anexa</Text>
+    </View>
+  </View>
+);
+
+const QuestionBlock = ({ question, index }) => (
+  <View style={styles.questionContainer} wrap={false}>
+    <Text style={styles.questionTitle}>
+      {index + 1}. (ENEM {question.year || 'N/A'})
+    </Text>
+
+    <MarkdownRenderer 
+      content={question.context} 
+      textStyle={styles.context} 
+    />
+
+    {question.alternativesIntroduction && (
+      <Text style={styles.alternativesIntroduction}>
+        {question.alternativesIntroduction}
+      </Text>
+    )}
+
+    <View>
+      {question.alternatives?.map((alt, i) => (
+        <View key={i} style={styles.alternativeRow} wrap={false}>
+          <Text style={styles.alternativeLetter}>
+            {`${alt.letter ? alt.letter.toLowerCase() : String.fromCharCode(97 + i)})`}
+          </Text>
+          <View style={styles.alternativeText}>
+            <MarkdownRenderer 
+              content={alt.text || ''} 
+              textStyle={styles.alternativeText} 
+            />
+          </View>
+        </View>
+      ))}
+    </View>
+  </View>
+);
+
 const Simulado = ({ questions }) => {
-  if (!questions || !Array.isArray(questions) || questions.length === 0) {
+  const sortedQuestions = useMemo(() => {
+    if (!questions || !Array.isArray(questions)) return [];
+    return [...questions];
+  }, [questions]);
+
+  // Split questions into two columns for stability
+  const leftColumn = sortedQuestions.filter((_, i) => i % 2 === 0);
+  const rightColumn = sortedQuestions.filter((_, i) => i % 2 !== 0);
+
+  if (sortedQuestions.length === 0) {
     return (
       <Document>
         <Page size="A4" style={styles.page}>
@@ -120,78 +190,34 @@ const Simulado = ({ questions }) => {
     );
   }
 
-  const sortedQuestions = [...questions].sort(() => Math.random() - 0.5);
-
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <Image style={{ padding: 0, margin: 0 }} src={header} />
+        <SimuladoHeader />
 
-        <View style={styles.questionsContainer}>
-          {sortedQuestions.map((question, idx) => (
-            <View key={idx} style={styles.questionContainer}>
-              <Text style={styles.questionTitle}>
-                (ENEM {question.year || 'N/A'}) Exercício {idx + 1}
-              </Text>
+        <View style={styles.columnsContainer}>
+          {/* Left Column */}
+          <View style={styles.column}>
+            {leftColumn.map((q, i) => (
+              <QuestionBlock key={i} question={q} index={sortedQuestions.indexOf(q)} />
+            ))}
+          </View>
 
-              {question.files &&
-                question.files.length > 0 &&
-                question.files.map((file, i) => (
-                  <Image style={styles.image} key={i} src={file} />
-                ))}
-
-              {question.context && (
-                <Text style={styles.context}>
-                  {question.context.replace(/\*/g,'').replace(/!\[.*?\]\(.*?\)/g,'')}
-                </Text>
-              )}
-
-              {question.alternativesIntroduction && (
-                <Text style={styles.alternativesIntroduction}>
-                  {question.alternativesIntroduction}
-                </Text>
-              )}
-
-              {question.alternatives && question.alternatives.length > 0 && (
-                <View>
-                  {question.alternatives.map((alternative, i) => (
-                    <View key={i} style={{
-                      flexDirection: 'row',
-                      alignItems: 'flex-start',
-                      justifyContent: 'flex-start',
-                      marginBottom: 6,
-                      ...(alternative.file && { maxWidth: 100 })
-                    }}>
-                      <Text style={styles.alternativeLetter}>
-                        {`${alternative.letter ? alternative.letter.toLowerCase() : String.fromCharCode(97 + i)}) `}
-                      </Text>
-                      <Text style={styles.alternativeText}>
-                        {alternative.text || ''}
-                      </Text>
-                      {alternative.file && (
-                        <Image
-                          style={styles.alternativeImage}
-                          src={alternative.file}
-                        />
-                      )}
-                    </View>
-                  ))}
-                </View>
-              )}
-            </View>
-          ))}
+          {/* Right Column */}
+          <View style={styles.column}>
+            {rightColumn.map((q, i) => (
+              <QuestionBlock key={i} question={q} index={sortedQuestions.indexOf(q)} />
+            ))}
+          </View>
         </View>
 
-        <View style={styles.gabaritoContainer}>
-          <Image style={{ padding: 0, marginBottom: 10 }} src={gabarito} />
-          <View style={styles.gabaritoAnswers}>
+        <View style={styles.gabaritoSection} break>
+          <Text style={styles.gabaritoTitle}>GABARITO OFICIAL</Text>
+          <View style={styles.gabaritoGrid}>
             {sortedQuestions.map((question, idx) => (
-              <View key={idx}>
-                <Text style={styles.gabaritoItem}>
-                  {idx + 1}: <Text style={styles.gabaritoAnswer}>
-                    {question.correctAlternative || 'N/A'}
-                  </Text>
-                </Text>
+              <View key={`gab-${idx}`} style={styles.gabaritoItem}>
+                <Text style={styles.gabaritoNumber}>{String(idx + 1).padStart(2, '0')}.</Text>
+                <Text>{question.correctAlternative || '-'}</Text>
               </View>
             ))}
           </View>
@@ -201,4 +227,4 @@ const Simulado = ({ questions }) => {
   );
 };
 
-export default Simulado;
+export default React.memo(Simulado);
