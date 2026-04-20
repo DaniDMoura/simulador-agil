@@ -11,6 +11,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.context.ActiveProfiles;
+
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,6 +20,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 public class QuestionServiceTest {
 
     @Mock
@@ -54,7 +57,7 @@ public class QuestionServiceTest {
                         List.of(
                                 QuestionResponse.builder()
                                         .title("Q1")
-                                        .discipline("math")
+                                        .discipline("matematica")
                                         .year(2020)
                                         .correctAlternative("A")
                                         .context("ctx")
@@ -87,7 +90,8 @@ public class QuestionServiceTest {
                         )
                 );
 
-        doNothing().when(questionRandomProvider).shuffle(anyList());
+        when(questionRandomProvider.shuffle(anyList()))
+                .thenAnswer(invocation -> invocation.getArgument(0));
 
         List<QuestionResponse> questionResponses = questionService.getQuestions(questionRequest);
 
@@ -96,7 +100,7 @@ public class QuestionServiceTest {
         QuestionResponse questions = questionResponses.getFirst();
 
         assertEquals("Q1", questions.title());
-        assertEquals("math", questions.discipline());
+        assertEquals("matematica", questions.discipline());
         assertEquals(2020, questions.year());
         assertEquals("A", questions.correctAlternative());
         assertEquals("ctx", questions.context());

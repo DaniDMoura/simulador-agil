@@ -1,6 +1,5 @@
-package com.danidmoura.simulador_agil.api.service;
+package com.danidmoura.simulador_agil.api.client;
 
-import com.danidmoura.simulador_agil.api.client.QuestionClient;
 import com.danidmoura.simulador_agil.api.client.dto.EnemApiMetadataResponse;
 import com.danidmoura.simulador_agil.api.client.dto.EnemApiQuestionResponse;
 import com.danidmoura.simulador_agil.api.client.dto.EnemApiResponse;
@@ -15,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
@@ -23,6 +23,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 public class QuestionFetcherTest {
 
     @Mock
@@ -39,7 +40,7 @@ public class QuestionFetcherTest {
 
     @Test
     public void shouldReturnQuestionsWhenFetch() {
-        when(questionRandomProvider.nextInt(180)).thenReturn(3);
+        when(questionRandomProvider.nextInt(anyInt())).thenReturn(3);
 
         when(questionClient.fetchQuestions(eq(2023), eq(3), anyInt()))
                 .thenReturn(ResponseEntity.ok(
@@ -133,7 +134,7 @@ public class QuestionFetcherTest {
 
     @Test
     public void shouldReturnEmptyListWhenResponseIsNull() {
-        when(questionRandomProvider.nextInt(180)).thenReturn(3);
+        when(questionRandomProvider.nextInt(anyInt())).thenReturn(3);
 
         when(questionClient.fetchQuestions(eq(2023), eq(3), anyInt()))
                 .thenReturn(ResponseEntity.ok(

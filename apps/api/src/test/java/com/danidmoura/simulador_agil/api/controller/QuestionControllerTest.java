@@ -1,20 +1,24 @@
 package com.danidmoura.simulador_agil.api.controller;
 
+import com.danidmoura.simulador_agil.api.config.RateLimitFilter;
 import com.danidmoura.simulador_agil.api.dto.AlternativeResponse;
 import com.danidmoura.simulador_agil.api.dto.QuestionRequest;
 import com.danidmoura.simulador_agil.api.service.QuestionService;
 import com.danidmoura.simulador_agil.api.dto.QuestionResponse;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.ObjectMapper;
-
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
@@ -23,9 +27,9 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-
 @SpringBootTest
-@AutoConfigureMockMvc
+@AutoConfigureMockMvc(addFilters = false)
+@ActiveProfiles("test")
 public class QuestionControllerTest {
 
     @Autowired
@@ -243,4 +247,6 @@ public class QuestionControllerTest {
                 .andExpect(jsonPath("$.invalid-params[*].name", hasItem("atLeastOneSubjectEnabled")))
                 .andExpect(jsonPath("$.invalid-params[*].reason", hasItem("At least one subject must be enabled")));
     }
+
+
 }
