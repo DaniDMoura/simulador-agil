@@ -5,36 +5,128 @@
   src: url('/fonts/Granaina-limpia.ttf.woff') format('woff');
   font-display: swap;
 }
+
+@font-face {
+  font-family: 'Helvetica';
+  src: url('/fonts/Helvetica.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Helvetica-Bold';
+  src: url('/fonts/Helvetica-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
 @font-face {
   font-family: 'Noto-Serif';
   src: url('/fonts/NotoSerif-VariableFont_wdth,wght.ttf') format('truetype');
   font-display: swap;
 }
+
 @theme {
-  --font-family-granaina: "Granaina-limpia", ui-sans-serif, system-ui, sans-serif;
-  --font-family-primary: "Noto-Serif", ui-sans-serif, system-ui, sans-serif;
+  --font-constant: "Granaina-limpia", serif;
+  --font-default: "Helvetica", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  
+  /* Retaining mapped names for compatibility but updated to new system */
+  --font-family-granaina: var(--font-constant);
+  --font-family-primary: var(--font-default);
+  --font-family-secondary: var(--font-default);
+
   --animate-appear: appear 0.7s ease forwards 0.3s;
   --animate-appear2: appear 0.3s ease forwards;
   --animate-disappear: disappear 0.3s ease-in-out;
   --animate-appearDialog: appearDialog 10s ease-in-out;
+  --animate-fadeIn: fadeIn 0.2s ease-out forwards;
+  --animate-slideUp: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
-body{
-  background-color:#111010;
-  font-family: var(--font-family-primary);
+
+body {
+  background-color: #111010;
+  font-family: var(--font-default);
+  color: #f5f5f4;
+}
+
+/* Global Interactivity Rules */
+button, 
+a, 
+input[type="range"], 
+input[type="checkbox"], 
+input[type="radio"], 
+select, 
+[role="button"] {
+  cursor: pointer;
+}
+
+button:disabled, 
+a:disabled, 
+input:disabled, 
+select:disabled, 
+.disabled {
+  cursor: not-allowed !important;
+}
+
+/* Utility class for constant text */
+.font-constant {
+  font-family: var(--font-constant);
+}
+
+/* Custom Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(15px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes spin-linear {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spinner-rotate {
+  animation: spin-linear 1s linear infinite;
+}
+
+.spinner-white {
+  filter: brightness(0) invert(1);
 }
 
 @keyframes appear {
-  100%{
+  100% {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
 @keyframes disappear {
-  100%{
+  100% {
     opacity: 0;
     transform: translateY(0);
   }
 }
+
 @keyframes appearDialog {
   0% {
     opacity: 0;
