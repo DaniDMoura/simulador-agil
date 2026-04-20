@@ -3,18 +3,21 @@ package com.danidmoura.simulador_agil.api.service;
 import com.danidmoura.simulador_agil.api.dto.QuestionRequest;
 import com.danidmoura.simulador_agil.api.dto.QuestionResponse;
 import com.danidmoura.simulador_agil.api.exception.NoSubjectsEnabledException;
+import com.danidmoura.simulador_agil.api.exception.QuestionRequestOutOfBoundsException;
 import com.danidmoura.simulador_agil.api.util.QuestionFetcher;
 import com.danidmoura.simulador_agil.api.util.QuestionRandomProvider;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Service
 public class QuestionService {
+
+    private static final int QUESTIONS_PER_SUBJECT = 45;
 
     private final QuestionFetcher questionFetcher;
     private final QuestionRandomProvider questionRandomProvider;
@@ -30,23 +33,59 @@ public class QuestionService {
     )
     public List<QuestionResponse> getQuestions(QuestionRequest req) {
         List<String> subjects = buildEnabledSubjects(req);
-        if (subjects.isEmpty()) throw new NoSubjectsEnabledException();
+        validateSubjects(subjects);
 
-        List<Integer> years = buildYears(req);
-        questionRandomProvider.shuffle(years);
+        int maxAllowedQuestions = calculateMaxAllowedQuestions(req);
+        validateNumberOfQuestions(req, maxAllowedQuestions);
 
-        int calls = calculateCalls(req.number(), years.size());
+        List<Integer> years = questionRandomProvider.shuffle(buildYears(req));
 
-        List<QuestionResponse> result = years.stream()
-                .limit(calls)
-                .map(year -> questionFetcher.getQuestionResponses(year, subjects))
-                .flatMap(List::stream)
+        List<QuestionResponse> questionsResult = new ArrayList<>();
+        HashSet<String> uniqueQuestionIds = new HashSet<>();
+
+        while (uniqueQuestionIds.size() < req.number()) {
+            Integer year = years.get(questionRandomProvider.nextInt(years.size()));
+
+            List<QuestionResponse> questions = questionFetcher.getQuestionResponses(year, subjects);
+
+            questionsResult.addAll(questions);
+
+            List<String> questionIds = questions.stream()
+                            .map(question -> question.title() + question.year())
+                            .distinct()
+                            .toList();
+
+            uniqueQuestionIds.addAll(questionIds);
+        }
+
+        questionsResult = questionRandomProvider.shuffle(questionsResult);
+
+        return questionsResult.stream()
                 .limit(req.number())
-                .collect(Collectors.toCollection(ArrayList::new));
+                .toList();
+    }
 
-        questionRandomProvider.shuffle(result);
+    private void validateSubjects(List<String> subjects) {
+        if (subjects.isEmpty()) throw new NoSubjectsEnabledException();
+    }
 
-        return result;
+    private void validateNumberOfQuestions(QuestionRequest req, int maxAllowedQuestions) {
+        if (req.number() > calculateMaxAllowedQuestions(req)) throw new QuestionRequestOutOfBoundsException("Requested: " + req.number() + ", max allowed: " + maxAllowedQuestions);
+    }
+
+    private int countEnabledSubjects(QuestionRequest req) {
+        int count = 0;
+        if (req.enableCienciasHumanas()) count++;
+        if (req.enableCienciasNatureza()) count++;
+        if (req.enableLinguagens()) count++;
+        if (req.enableMatematica()) count++;
+        return count;
+    }
+
+    private int calculateMaxAllowedQuestions(QuestionRequest req) {
+        int totalYears = (req.maxYear() - req.minYear()) + 1;
+        int enabledSubjects = countEnabledSubjects(req);
+        return enabledSubjects * QUESTIONS_PER_SUBJECT * totalYears;
     }
 
     private List<String> buildEnabledSubjects(QuestionRequest req) {
@@ -65,14 +104,5 @@ public class QuestionService {
                 .rangeClosed(req.minYear(), req.maxYear())
                 .boxed()
                 .toList();
-    }
-
-    private int calculateCalls(int target, int totalYears) {
-        int calls = (int) Math.ceil(target / 60.0);
-
-        return Math.min(
-                Math.max(4, calls),
-                totalYears
-        );
     }
 }

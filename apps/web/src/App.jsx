@@ -69,7 +69,7 @@ const frases = [
 ];
 
 const fetchUsers = async ({
-  numero,
+  number,
   cienciasNatureza,
   matematica,
   linguagens,
@@ -80,7 +80,7 @@ const fetchUsers = async ({
   const res = await axios.post(
     "/api/questions",
     {
-      numero: numero,
+      number: number,
       minYear: minYear,
       maxYear: maxYear,
       enableCienciasNatureza: cienciasNatureza,
@@ -101,7 +101,7 @@ const LoadingSpinner = () => (
 );
 
 function App() {
-  const [numero, setNumero] = useState(1);
+  const [number, setNumber] = useState(1);
   const [activeSettings, setActiveSettings] = useState(false);
   const [activeContact, setActiveContact] = useState(false)
 
@@ -129,7 +129,7 @@ function App() {
 
   const handleClick = () => {
     mutation.mutate({
-      number: numero,
+      number: number,
       cienciasNatureza: cienciasNatureza,
       matematica: matematica,
       linguagens: linguagens,
@@ -142,7 +142,7 @@ function App() {
   const handleUpdate = (e) => {
     const value = Number(e.target.value);
     if (value >= 0 && value <= 10000) {
-      setNumero(value);
+      setNumber(value);
     }
   };
 
@@ -407,7 +407,7 @@ function App() {
             <input
               placeholder="Entre a quantidade de questões"
               pattern="[0-9]*"
-              value={numero}
+              value={number}
               onChange={handleUpdate}
               className="w-[35vw] max-md:w-[70vw] h-14 bg-stone-800 p-3 text-stone-100 rounded-lg border border-stone-800 focus:border-blue-400 outline-none"
             />

@@ -31,6 +31,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/questions").permitAll()
+                        .requestMatchers("/actuator/health").permitAll()
                         .anyRequest().denyAll()
                 )
                 .addFilterBefore(new RateLimitFilter(), UsernamePasswordAuthenticationFilter.class)
@@ -41,7 +42,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfig = new CorsConfiguration();
 
-        corsConfig.setAllowedOrigins(List.of("http://localhost:3000", "https://www.simulado.site", "http://web:3000"));
+        corsConfig.setAllowedOrigins(List.of("http://localhost", "https://www.simulado.site", "http://web"));
         corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         corsConfig.setAllowedHeaders(List.of("Content-Type", "Accept"));
         corsConfig.setExposedHeaders(List.of("Content-Type"));

@@ -1,10 +1,10 @@
-FROM gradle:9.4.1-jdk25-alpine AS BUILD
+FROM gradle:9.4.1-jdk25-alpine AS build
 
 WORKDIR /app
 COPY build.gradle settings.gradle ./
 
 COPY src ./src
-RUN gradle bootJar 
+RUN gradle build
 
 FROM eclipse-temurin:25-jre-alpine
 

@@ -45,6 +45,10 @@ public class RateLimitFilter implements Filter {
         chain.doFilter(request, response);
     }
 
+    public void resetLimits() {
+        requestCounts.clear();
+    }
+
     private String getClientIp(HttpServletRequest request) {
         String xff = request.getHeader("X-Forwarded-For");
         if (xff != null && !xff.isEmpty()) {
