@@ -10,7 +10,7 @@ const ContactModal = ({ onClose }) => {
       rel="noopener noreferrer"
       className="block w-full"
     >
-      <button className="w-full border cursor-pointer border-primary/50 text-primary font-medium py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg hover:bg-primary hover:text-bg transition-all duration-300 active:scale-[0.98]">
+      <button className="w-full border cursor-pointer border-primary/50 hover:text-white text-primary font-medium py-3 rounded-xl flex items-center justify-center gap-2 shadow-lg hover:bg-primary transition-all duration-300 active:scale-[0.98]">
         <Star className="w-5 h-5" />
         <span className="text-lg">Estrelar repositório</span>
       </button>
