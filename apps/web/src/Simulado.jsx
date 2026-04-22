@@ -4,6 +4,7 @@ import {
   Page,
   Text,
   View,
+  Image,
   StyleSheet,
   Font
 } from "@react-pdf/renderer";
@@ -93,6 +94,17 @@ const styles = StyleSheet.create({
     fontSize: 8.5,
     lineHeight: 1.2,
   },
+  alternativeImage: {
+    maxWidth: '100%',
+    height: 'auto',
+    marginTop: 2,
+    marginBottom: 2,
+  },
+  errorText: {
+    fontSize: 8,
+    color: '#000000',
+    fontStyle: 'italic',
+  },
   gabaritoSection: {
     marginTop: 15,
     borderTopWidth: 1,
@@ -159,10 +171,22 @@ const QuestionBlock = ({ question, index }) => (
             {`${alt.letter ? alt.letter.toLowerCase() : String.fromCharCode(97 + i)})`}
           </Text>
           <View style={styles.alternativeText}>
-            <MarkdownRenderer 
-              content={alt.text || ''} 
-              textStyle={styles.alternativeText} 
-            />
+            {alt.text ? (
+              <MarkdownRenderer 
+                content={alt.text} 
+                textStyle={styles.alternativeText} 
+              />
+            ) : alt.file ? (
+              <Image 
+                src={alt.file} 
+                style={styles.alternativeImage} 
+              />
+            ) : (
+              (() => {
+                console.error(`Edge case: Alternative ${alt.letter || i} has both text and file null`, alt);
+                return <Text style={styles.errorText}>[Conteúdo não disponível]</Text>;
+              })()
+            )}
           </View>
         </View>
       ))}

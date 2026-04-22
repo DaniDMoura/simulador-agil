@@ -186,4 +186,6 @@ dist
 # SvelteKit
 .svelte-kit
 
+GEMINI.md
+
 # End of https://www.toptal.com/developers/gitignore/api/java,gradle,node

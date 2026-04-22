@@ -56,7 +56,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#111010]">
+    <div className="min-h-screen bg-bg">
       <header>
         <Navbar 
           onContactClick={() => setActiveContact(true)} 
@@ -96,21 +96,21 @@ function App() {
               placeholder="Entre a quantidade de questões"
               value={number}
               onChange={handleNumberChange}
-              className="w-[35vw] max-md:w-[70vw] h-14 bg-stone-800 p-3 text-stone-100 rounded-lg border border-stone-800 focus:border-blue-400 outline-none transition-colors"
+              className="w-[35vw] max-md:w-[70vw] h-14 bg-neutral-800 p-3 text-text rounded-lg border border-neutral-800 focus:border-primary outline-none transition-colors"
             />
             <button
               type="button"
               onClick={handleSubmit}
               disabled={mutation.isPending}
-              className="w-[100px] max-md:w-[70vw] h-14 bg-blue-400 text-stone-800 p-3 rounded-lg hover:bg-blue-300 transition-all disabled:opacity-50 flex items-center justify-center font-medium"
+              className="w-[100px] max-md:w-[70vw] h-14 bg-primary text-bg p-3 rounded-lg hover:bg-primary-hover transition-all disabled:opacity-50 flex items-center justify-center font-medium"
             >
               {mutation.isPending ? <Spinner className="w-6 h-6 spinner-white" /> : "Enviar"}
             </button>
           </div>
 
-          <p className="text-[14px] mt-[35px] mb-[5vh] text-center text-stone-400">
+          <p className="text-[14px] mt-[35px] mb-[5vh] text-center text-neutral-400">
             Crie seu próprio simulado ENEM, <br />
-            entre em <button className="text-blue-400 hover:underline" onClick={() => setActiveSettings(true)}>"Settings"</button> para ajustar os filtros
+            entre em <button className="text-primary-light hover:underline" onClick={() => setActiveSettings(true)}>"Settings"</button> para ajustar os filtros
           </p>
         </section>
 

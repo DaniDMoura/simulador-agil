@@ -27,7 +27,7 @@ const SettingsModal = ({
     <Modal title="Filtros do Simulado" onClose={onClose}>
       <div className="space-y-8 py-2">
         <section>
-          <h3 className="text-sm font-bold text-stone-500 uppercase tracking-widest mb-4">
+          <h3 className="text-sm font-bold text-neutral-500 uppercase tracking-widest mb-4">
             Disciplinas
           </h3>
           <div className="grid grid-cols-2 gap-3">
@@ -36,8 +36,8 @@ const SettingsModal = ({
                 key={label}
                 className={`p-4 transition-all cursor-pointer duration-300 rounded-xl flex items-center justify-center text-sm font-semibold border-2 ${
                   state
-                    ? "bg-blue-600/10 border-blue-500 text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.1)]"
-                    : "bg-stone-700/20 border-stone-700 text-stone-500 hover:border-stone-600 hover:text-stone-400"
+                    ? "bg-primary/10 border-primary text-primary-light shadow-[0_0_15px_rgba(59,130,246,0.1)]"
+                    : "bg-neutral-700/20 border-neutral-700 text-neutral-500 hover:border-neutral-600 hover:text-neutral-400"
                 } active:scale-[0.97]`}
                 onClick={() => setter(!state)}
               >
@@ -48,17 +48,17 @@ const SettingsModal = ({
         </section>
 
         <section>
-          <h3 className="text-sm font-bold text-stone-500 uppercase tracking-widest mb-6">
+          <h3 className="text-sm font-bold text-neutral-500 uppercase tracking-widest mb-6">
             Ano da Prova
           </h3>
           <div className="space-y-8">
             <div className="space-y-4">
               <div className="flex justify-between items-end">
-                <span className="text-stone-300 font-medium">Ano Inicial</span>
-                <span className="text-blue-400 font-bold text-lg">{minYear}</span>
+                <span className="text-neutral-300 font-medium">Ano Inicial</span>
+                <span className="text-primary-light font-bold text-lg">{minYear}</span>
               </div>
               <input
-                className="w-full h-2 bg-stone-700 rounded-lg appearance-none accent-blue-500 hover:accent-blue-400 transition-all"
+                className="w-full h-2 bg-neutral-700 rounded-lg appearance-none accent-primary hover:accent-primary-light transition-all"
                 type="range"
                 min={2010}
                 max={2023}
@@ -73,11 +73,11 @@ const SettingsModal = ({
 
             <div className="space-y-4">
               <div className="flex justify-between items-end">
-                <span className="text-stone-300 font-medium">Ano Final</span>
-                <span className="text-blue-400 font-bold text-lg">{maxYear}</span>
+                <span className="text-neutral-300 font-medium">Ano Final</span>
+                <span className="text-primary-light font-bold text-lg">{maxYear}</span>
               </div>
               <input
-                className="w-full h-2 bg-stone-700 rounded-lg appearance-none accent-blue-500 hover:accent-blue-400 transition-all"
+                className="w-full h-2 bg-neutral-700 rounded-lg appearance-none accent-primary hover:accent-primary-light transition-all"
                 type="range"
                 min={2010}
                 max={2023}

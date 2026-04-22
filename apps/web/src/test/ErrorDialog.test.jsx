@@ -56,7 +56,7 @@ describe("ErrorDialog component", () => {
     const mockError = { message: "error" };
     render(<ErrorDialog error={mockError} onClose={onClose} />);
 
-    const closeIcon = screen.getByLabelText("Fechar erro");
+    const closeIcon = screen.getByLabelText("Close modal");
     fireEvent.click(closeIcon);
     expect(onClose).toHaveBeenCalledTimes(1);
 

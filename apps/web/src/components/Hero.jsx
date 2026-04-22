@@ -11,8 +11,11 @@ const Hero = () => {
   }, []);
 
   return (
-    <h1 className="flex justify-center w-full opacity-0 mb-6 md:mb-8 text-center animate-appear transition-colors duration-300">
-      <ConstantText className="text-5xl sm:text-6xl md:text-7xl lg:text-[80px] max-w-[95vw] md:max-w-[85vw] lg:max-w-[80vw] font-medium leading-tight tracking-tight text-stone-100">
+    <h1 
+      className="flex justify-center w-full opacity-0 mb-8 text-center animate-appear transition-colors duration-300"
+      style={{ fontSize: 'clamp(2rem, 8vw, 4.5rem)', maxWidth: '28ch' }}
+    >
+      <ConstantText className="font-medium leading-tight tracking-tight text-text text-balance">
         {frasePrincipal}
       </ConstantText>
     </h1>

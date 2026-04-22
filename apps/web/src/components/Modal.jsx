@@ -13,15 +13,15 @@ const Modal = ({ title, children, footer, onClose, maxWidth = "max-w-md" }) => {
       />
       
       {/* Modal Container */}
-      <div className={`relative bg-stone-800 w-full ${maxWidth} rounded-2xl shadow-2xl overflow-hidden animate-slideUp border border-stone-700/50`}>
+      <div className={`relative bg-neutral-800 w-full ${maxWidth} rounded-2xl shadow-2xl overflow-hidden animate-slideUp border border-neutral-700/50`}>
         {/* Header */}
         <div className="flex items-center justify-between p-6 pb-4">
-          <h2 className="text-xl font-semibold text-stone-100 tracking-tight">
+          <h2 className="text-xl font-semibold text-text tracking-tight">
             {title}
           </h2>
           <button
             onClick={onClose}
-            className="p-2 text-stone-400 cursor-pointer hover:text-white hover:bg-stone-700 rounded-lg transition-all duration-200 active:scale-95"
+            className="p-2 text-neutral-400 cursor-pointer hover:text-white hover:bg-neutral-700 rounded-lg transition-all duration-200 active:scale-95"
             aria-label="Close modal"
           >
             <X size={20} />
@@ -35,7 +35,7 @@ const Modal = ({ title, children, footer, onClose, maxWidth = "max-w-md" }) => {
 
         {/* Footer */}
         {footer && (
-          <div className="p-6 pt-4 border-t border-stone-700/50 bg-stone-800/50">
+          <div className="p-6 pt-4 border-t border-neutral-700/50 bg-neutral-800/50">
             {footer}
           </div>
         )}

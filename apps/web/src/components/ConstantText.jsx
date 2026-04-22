@@ -6,7 +6,7 @@ import React from "react";
  */
 const ConstantText = ({ children, className = "" }) => {
   return (
-    <span className={`font-constant block line-clamp-2 leading-tight ${className}`}>
+    <span className={`font-constant block leading-tight ${className}`}>
       {children}
     </span>
   );

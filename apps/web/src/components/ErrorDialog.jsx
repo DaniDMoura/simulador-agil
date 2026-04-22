@@ -12,7 +12,7 @@ const ErrorDialog = ({ error, onClose }) => {
     <div className="flex justify-end">
       <button
         onClick={onClose}
-        className="bg-red-500/10 text-red-500 border cursor-pointer border-red-500/20 px-6 py-2 rounded-xl font-bold text-sm hover:bg-red-500 hover:text-white transition-all shadow-md active:scale-95"
+        className="bg-primary/10 text-primary border cursor-pointer border-primary/20 px-6 py-2 rounded-xl font-bold text-sm hover:bg-primary hover:text-bg transition-all shadow-md active:scale-95"
       >
         Entendido
       </button>
@@ -20,8 +20,8 @@ const ErrorDialog = ({ error, onClose }) => {
   );
 
   const modalTitle = (
-    <div className="flex items-center gap-2 text-red-500">
-      <AlertCircle size={24} strokeWidth={2.5} />
+    <div className="flex items-center gap-2 text-text">
+      <AlertCircle size={24} strokeWidth={2.5} className="text-primary" />
       <span>{title}</span>
     </div>
   );
@@ -30,22 +30,22 @@ const ErrorDialog = ({ error, onClose }) => {
     <Modal title={modalTitle} onClose={onClose} footer={footer}>
       <div className="space-y-4 py-2">
         {detail && (
-          <p className="text-stone-300 text-sm leading-relaxed">
+          <p className="text-neutral-300 text-sm leading-relaxed">
             {detail}
           </p>
         )}
 
         {validationErrors.length > 0 && (
-          <div className="bg-red-500/5 p-4 rounded-xl border border-red-500/20">
-            <p className="text-red-500 text-xs font-bold uppercase tracking-widest mb-3">
+          <div className="bg-neutral-900/50 p-4 rounded-xl border border-neutral-700/50">
+            <p className="text-neutral-500 text-xs font-bold uppercase tracking-widest mb-3">
               Erros de Validação
             </p>
             <ul className="space-y-2">
               {validationErrors.map((err, idx) => (
-                <li key={idx} className="text-stone-400 text-sm flex items-start gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-1.5 shrink-0" />
+                <li key={idx} className="text-neutral-400 text-sm flex items-start gap-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 shrink-0" />
                   <span>
-                    <strong className="text-stone-200">{err.name}</strong>: {err.reason}
+                    <strong className="text-neutral-200">{err.name}</strong>: {err.reason}
                   </span>
                 </li>
               ))}
@@ -54,7 +54,7 @@ const ErrorDialog = ({ error, onClose }) => {
         )}
 
         {status && !validationErrors.length && (
-          <p className="text-stone-500 text-xs font-mono bg-stone-900/50 p-2 rounded-lg w-fit">
+          <p className="text-neutral-500 text-xs font-mono bg-neutral-900/50 p-2 rounded-lg w-fit">
             Status Code: {status}
           </p>
         )}

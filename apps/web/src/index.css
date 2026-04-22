@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: 'Granaina-limpia';
+  font-family: Granaina-limpia;
   src: url('/fonts/Granaina-limpia.ttf.woff') format('woff');
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Helvetica';
+  font-family: Helvetica;
   src: url('/fonts/Helvetica.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
@@ -15,7 +15,7 @@
 }
 
 @font-face {
-  font-family: 'Helvetica-Bold';
+  font-family: Helvetica-Bold;
   src: url('/fonts/Helvetica-Bold.ttf') format('truetype');
   font-weight: bold;
   font-style: normal;
@@ -23,32 +23,56 @@
 }
 
 @font-face {
-  font-family: 'Noto-Serif';
+  font-family: Noto-Serif;
   src: url('/fonts/NotoSerif-VariableFont_wdth,wght.ttf') format('truetype');
   font-display: swap;
+}
+
+:root {
+  --color-primary: #06b6d4;
+  --color-primary-hover: #0891b2;
+  --color-primary-light: #22d3ee;
+  --color-bg: #111010;
+  --color-text: #f5f5f4;
+  --color-neutral-900: #1c1917;
+  --color-neutral-800: #292524;
+  --color-neutral-700: #44403c;
+  --color-neutral-600: #57534e;
+  --color-neutral-500: #78716c;
+  --color-neutral-400: #a8a29e;
 }
 
 @theme {
   --font-constant: "Granaina-limpia", serif;
   --font-default: "Helvetica", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-primary-light: var(--color-primary-light);
+  --color-bg: var(--color-bg);
+  --color-text: var(--color-text);
+  --color-neutral-900: var(--color-neutral-900);
+  --color-neutral-800: var(--color-neutral-800);
+  --color-neutral-700: var(--color-neutral-700);
+  --color-neutral-600: var(--color-neutral-600);
+  --color-neutral-500: var(--color-neutral-500);
+  --color-neutral-400: var(--color-neutral-400);
+
   /* Retaining mapped names for compatibility but updated to new system */
   --font-family-granaina: var(--font-constant);
   --font-family-primary: var(--font-default);
   --font-family-secondary: var(--font-default);
-
   --animate-appear: appear 0.7s ease forwards 0.3s;
   --animate-appear2: appear 0.3s ease forwards;
   --animate-disappear: disappear 0.3s ease-in-out;
-  --animate-appearDialog: appearDialog 10s ease-in-out;
-  --animate-fadeIn: fadeIn 0.2s ease-out forwards;
-  --animate-slideUp: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  --animate-appearDialog: appeardialog 10s ease-in-out;
+  --animate-fadeIn: fadein 0.2s ease-out forwards;
+  --animate-slideUp: slideup 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 body {
-  background-color: #111010;
+  background-color: var(--color-bg);
   font-family: var(--font-default);
-  color: #f5f5f4;
+  color: var(--color-text);
 }
 
 /* Global Interactivity Rules */
@@ -79,15 +103,18 @@ select:disabled,
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
 }
+
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent;
 }
+
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #444;
+  background: var(--color-neutral-700);
   border-radius: 10px;
 }
+
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: var(--color-neutral-600);
 }
 
 @keyframes fadeIn {
@@ -132,14 +159,17 @@ select:disabled,
     opacity: 0;
     transform: translateX(-20px);
   }
+
   10% {
     opacity: 1;
     transform: translateX(0);
   }
+
   90% {
     opacity: 1;
     transform: translateX(0);
   }
+
   100% {
     opacity: 0;
     transform: translateX(-20px);

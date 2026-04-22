@@ -2,36 +2,29 @@ import React from "react";
 
 export const FRASES = [
   <>
-    Organize seus estudos{" "}
-    para o{" "}
-    <span className="text-blue-400 hover:text-blue-300 hover:drop-shadow-[0_0_15px_rgba(96,165,250,0.8)] hover:scale-110 transition-all duration-300">ENEM</span>{" "}
-    com absoluta e total inteligência
+    Organize seus estudos para o 
+    <span className="inline-block whitespace-nowrap text-primary-light"> ENEM</span> com absoluta e total inteligência
   </>,
 
   <>
-    Milhares de questões{" "}
-    organizadas por sua{" "}
-    <span className="text-blue-400 hover:text-blue-300 hover:drop-shadow-[0_0_15px_rgba(96,165,250,0.8)] hover:scale-110 transition-all duration-300">área</span>{" "}
-    e também por{" "}
-    <span className="text-blue-400 hover:text-blue-300 hover:drop-shadow-[0_0_15px_rgba(96,165,250,0.8)] hover:scale-110 transition-all duration-300">ano</span>
+    Milhares de questões organizadas por sua 
+    <span className="inline-block whitespace-nowrap text-primary-light"> área </span> e também por 
+    <span className="inline-block whitespace-nowrap text-primary-light"> ano</span>
   </>,
 
   <>
-    Domine com facilidade{" "}
-    os conteúdos mais cobrados em todas provas do{" "}
-    <span className="text-blue-400 hover:text-blue-300 hover:drop-shadow-[0_0_15px_rgba(96,165,250,0.8)] hover:scale-110 transition-all duration-300">ENEM</span>
+    Domine com facilidade os conteúdos mais cobrados em todas provas do 
+    <span className="inline-block whitespace-nowrap text-primary-light"> ENEM</span>
   </>,
 
   <>
-    Revise com foco{" "}
-    e acerte muito mais questões oficiais do{" "}
-    <span className="text-blue-400 hover:text-blue-300 hover:drop-shadow-[0_0_15px_rgba(96,165,250,0.8)] hover:scale-110 transition-all duration-300">ENEM</span>
+    Revise com foco e acerte muito mais questões oficiais do 
+    <span className="inline-block whitespace-nowrap text-primary-light"> ENEM</span>
   </>,
 
   <>
-    Comece hoje mesmo{" "}
-    sua preparação completa para o seu exame do{" "}
-    <span className="text-blue-400 hover:text-blue-300 hover:drop-shadow-[0_0_15px_rgba(96,165,250,0.8)] hover:scale-110 transition-all duration-300">ENEM</span>
+    Comece hoje mesmo sua preparação completa para o seu exame do 
+    <span className="inline-block whitespace-nowrap text-primary-light"> ENEM</span>
   </>
 ];
 

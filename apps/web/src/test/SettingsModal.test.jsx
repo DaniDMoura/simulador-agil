@@ -24,7 +24,7 @@ describe("SettingsModal", () => {
   it("renders with correct discipline states", () => {
     render(<SettingsModal {...defaultProps} />);
     
-    expect(screen.getByText("Linguagens")).toHaveClass("bg-stone-900 border-blue-400");
+    expect(screen.getByText("Linguagens")).toHaveClass("bg-primary/10 border-primary");
     expect(screen.getByText("Disciplinas")).toBeInTheDocument();
   });
 
@@ -41,13 +41,15 @@ describe("SettingsModal", () => {
   it("displays current year values", () => {
     render(<SettingsModal {...defaultProps} />);
     
-    expect(screen.getByText(/Ano Inicial: 2010/)).toBeInTheDocument();
-    expect(screen.getByText(/Ano Final: 2023/)).toBeInTheDocument();
+    expect(screen.getByText("Ano Inicial")).toBeInTheDocument();
+    expect(screen.getByText("2010")).toBeInTheDocument();
+    expect(screen.getByText("Ano Final")).toBeInTheDocument();
+    expect(screen.getByText("2023")).toBeInTheDocument();
   });
 
   it("calls onClose when close button is clicked", () => {
     render(<SettingsModal {...defaultProps} />);
-    const closeButton = screen.getByRole("button", { name: "" });
+    const closeButton = screen.getByLabelText("Close modal");
     fireEvent.click(closeButton);
     expect(defaultProps.onClose).toHaveBeenCalled();
   });
