@@ -5,7 +5,7 @@
   <a href="https://www.instagram.com/danilosmoura_/" target="_blank">
     <img src="https://img.shields.io/badge/Instagram-Follow_@danilosmoura_-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram">
   </a>
-  <a href="https://simulado.site">
+  <a href="https://simulado.vercel.app">
     <img src="https://img.shields.io/website?url=https%3A%2F%2Fsimulado.site&style=for-the-badge" alt="Online">
   </a>
 </div>
