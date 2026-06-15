@@ -64,7 +64,7 @@ docker compose up --build
 
 ## 🌐 Demonstração
 
-Acesse a versão online: **[https://simulado.site](https://simulado.site)**
+Acesse a versão online: **[https://simulado-agil.vercel.app](https://simulado-agil.vercel.app)**
 
 ---
 
