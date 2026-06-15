@@ -1,0 +1,91 @@
+name: API CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'apps/api/**'
+      - '.github/workflows/api.yml'
+  pull_request:
+    paths:
+      - 'apps/api/**'
+
+# Cancel in-progress runs when a new commit is pushed.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test & Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: gradle
+
+      - name: Grant execute permission to Gradle wrapper
+        run: chmod +x ./gradlew
+        working-directory: apps/api
+
+      - name: Run Gradle tests
+        run: ./gradlew test
+        working-directory: apps/api
+
+      - name: Build application
+        run: ./gradlew assemble
+        working-directory: apps/api
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-test-reports
+          path: apps/api/build/reports/tests/
+          retention-days: 7
+
+  deploy:
+    name: Deploy to Render
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Push API subtree to private repository
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          
+          # Create a temporary branch with only the apps/api history
+          git subtree split --prefix=apps/api -b api-deploy
+          
+          # Add the private API repository as a remote
+          git remote add api-repo "https://x-access-token:${API_REPO_TOKEN}@github.com/${API_REPO_OWNER}/${API_REPO_NAME}.git"
+          
+          # Push the subtree branch to the private repository
+          git push api-repo api-deploy:main --force
+        env:
+          API_REPO_TOKEN: ${{ secrets.API_REPO_TOKEN }}
+          API_REPO_OWNER: ${{ secrets.API_REPO_OWNER }}
+          API_REPO_NAME: ${{ secrets.API_REPO_NAME }}
