@@ -29,7 +29,7 @@ public class QuestionService {
 
     @Cacheable(
             value = "questions",
-            key = "T(java.util.Objects).hash(#req.number, #req.minYear, #req.maxYear, #req.enableCienciasNatureza, #req.enableCienciasHumanas, #req.enableLinguagens, #req.enableMatematica)"
+            key = "'questions:' + #req.number + ':' + #req.minYear + ':' + #req.maxYear + ':' + #req.enableCienciasNatureza + ':' + #req.enableCienciasHumanas + ':' + #req.enableLinguagens + ':' + #req.enableMatematica"
     )
     public List<QuestionResponse> getQuestions(QuestionRequest req) {
         List<String> subjects = buildEnabledSubjects(req);
@@ -43,19 +43,20 @@ public class QuestionService {
         List<QuestionResponse> questionsResult = new ArrayList<>();
         HashSet<String> uniqueQuestionIds = new HashSet<>();
 
-        while (uniqueQuestionIds.size() < req.number()) {
+        int maxIterations = req.number() * 2;
+        int iterations = 0;
+
+        while (uniqueQuestionIds.size() < req.number() && iterations++ < maxIterations) {
             Integer year = years.get(questionRandomProvider.nextInt(years.size()));
 
             List<QuestionResponse> questions = questionFetcher.getQuestionResponses(year, subjects);
 
-            questionsResult.addAll(questions);
-
-            List<String> questionIds = questions.stream()
-                            .map(question -> question.title() + question.year())
-                            .distinct()
-                            .toList();
-
-            uniqueQuestionIds.addAll(questionIds);
+            for (QuestionResponse question : questions) {
+                String questionId = question.title() + ":" + question.year();
+                if (uniqueQuestionIds.add(questionId)) {
+                    questionsResult.add(question);
+                }
+            }
         }
 
         questionsResult = questionRandomProvider.shuffle(questionsResult);

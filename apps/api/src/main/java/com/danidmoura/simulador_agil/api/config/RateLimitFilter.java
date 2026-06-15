@@ -3,19 +3,23 @@ package com.danidmoura.simulador_agil.api.config;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.stereotype.Component;
-
+import org.springframework.beans.factory.annotation.Value;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Component
 public class RateLimitFilter implements Filter {
 
     private static final int MAX_REQUESTS_PER_MINUTE = 30;
     private static final long WINDOW_SIZE_MS = 60_000;
 
-    private final ConcurrentHashMap<String,RateLimitData> requestCounts = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, RateLimitData> requestCounts = new ConcurrentHashMap<>();
+    private final List<String> trustedProxies;
+
+    public RateLimitFilter(@Value("${rate-limit.trusted-proxies:}") List<String> trustedProxies) {
+        this.trustedProxies = trustedProxies;
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -50,11 +54,14 @@ public class RateLimitFilter implements Filter {
     }
 
     private String getClientIp(HttpServletRequest request) {
-        String xff = request.getHeader("X-Forwarded-For");
-        if (xff != null && !xff.isEmpty()) {
-            return xff.split(",")[0].trim();
+        String remoteAddr = request.getRemoteAddr();
+        if (!trustedProxies.isEmpty() && trustedProxies.contains(remoteAddr)) {
+            String xff = request.getHeader("X-Forwarded-For");
+            if (xff != null && !xff.isBlank()) {
+                return xff.split(",")[0].trim();
+            }
         }
-        return request.getRemoteAddr();
+        return remoteAddr;
     }
 
     private record RateLimitData(long windowStart, AtomicInteger count) {}

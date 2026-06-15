@@ -4,11 +4,16 @@ import {
   Page,
   Text,
   View,
-  Image,
   StyleSheet,
-  Font
+  Font,
+  Image,
 } from "@react-pdf/renderer";
 import MarkdownRenderer from "./components/MarkdownRenderer";
+import {
+  distributeQuestions,
+  isValidImageUrl,
+  resolveImageUrl,
+} from "./utils/pdfLayout";
 
 Font.register({
   family: 'Helvetica',
@@ -43,7 +48,6 @@ const styles = StyleSheet.create({
     fontSize: 8.5,
     color: '#444',
   },
-  // Stable 2-column structure
   columnsContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -89,21 +93,30 @@ const styles = StyleSheet.create({
     width: 12,
     fontSize: 8.5,
   },
-  alternativeText: {
+  alternativeContent: {
     flex: 1,
+    flexDirection: 'column',
+  },
+  alternativeText: {
     fontSize: 8.5,
     lineHeight: 1.2,
   },
   alternativeImage: {
+    maxHeight: 120,
     maxWidth: '100%',
-    height: 'auto',
-    marginTop: 2,
-    marginBottom: 2,
+    marginTop: 4,
+    alignSelf: 'flex-start',
   },
-  errorText: {
-    fontSize: 8,
-    color: '#000000',
-    fontStyle: 'italic',
+  imageFallback: {
+    marginTop: 4,
+    padding: 4,
+    borderWidth: 0.5,
+    borderColor: '#cc0000',
+    backgroundColor: '#fff0f0',
+  },
+  imageFallbackText: {
+    fontSize: 7,
+    color: '#cc0000',
   },
   gabaritoSection: {
     marginTop: 15,
@@ -147,15 +160,36 @@ const SimuladoHeader = () => (
   </View>
 );
 
+/**
+ * Renders an alternative image.
+ * The `file` field from the API is a direct image URL (not Markdown),
+ * e.g. "https://enem.dev/2016/questions/85/....png".
+ */
+const AlternativeImage = ({ url }) => {
+  const resolved = resolveImageUrl(url);
+
+  if (!resolved || !isValidImageUrl(resolved)) {
+    return (
+      <View style={styles.imageFallback}>
+        <Text style={styles.imageFallbackText}>
+          Imagem indisponível: {url || "URL ausente"}
+        </Text>
+      </View>
+    );
+  }
+
+  return <Image src={resolved} style={styles.alternativeImage} />;
+};
+
 const QuestionBlock = ({ question, index }) => (
   <View style={styles.questionContainer} wrap={false}>
     <Text style={styles.questionTitle}>
       {index + 1}. (ENEM {question.year || 'N/A'})
     </Text>
 
-    <MarkdownRenderer 
-      content={question.context} 
-      textStyle={styles.context} 
+    <MarkdownRenderer
+      content={question.context}
+      textStyle={styles.context}
     />
 
     {question.alternativesIntroduction && (
@@ -170,28 +204,54 @@ const QuestionBlock = ({ question, index }) => (
           <Text style={styles.alternativeLetter}>
             {`${alt.letter ? alt.letter.toLowerCase() : String.fromCharCode(97 + i)})`}
           </Text>
-          <View style={styles.alternativeText}>
-            {alt.text ? (
-              <MarkdownRenderer 
-                content={alt.text} 
-                textStyle={styles.alternativeText} 
+          <View style={styles.alternativeContent}>
+            {alt.text && (
+              <MarkdownRenderer
+                content={alt.text}
+                textStyle={styles.alternativeText}
               />
-            ) : alt.file ? (
-              <Image 
-                src={alt.file} 
-                style={styles.alternativeImage} 
-              />
-            ) : (
-              (() => {
-                console.error(`Edge case: Alternative ${alt.letter || i} has both text and file null`, alt);
-                return <Text style={styles.errorText}>[Conteúdo não disponível]</Text>;
-              })()
             )}
+            {alt.file && <AlternativeImage url={alt.file} />}
           </View>
         </View>
       ))}
     </View>
   </View>
+);
+
+const ExamPage = ({ leftItems, rightItems }) => (
+  <Page size="A4" style={styles.page}>
+    <SimuladoHeader />
+    <View style={styles.columnsContainer}>
+      <View style={styles.column}>
+        {leftItems.map(({ question, index }) => (
+          <QuestionBlock key={index} question={question} index={index} />
+        ))}
+      </View>
+      <View style={styles.column}>
+        {rightItems.map(({ question, index }) => (
+          <QuestionBlock key={index} question={question} index={index} />
+        ))}
+      </View>
+    </View>
+  </Page>
+);
+
+const GabaritoPage = ({ questions }) => (
+  <Page size="A4" style={styles.page}>
+    <SimuladoHeader />
+    <View style={styles.gabaritoSection}>
+      <Text style={styles.gabaritoTitle}>GABARITO OFICIAL</Text>
+      <View style={styles.gabaritoGrid}>
+        {questions.map((question, idx) => (
+          <View key={`gab-${idx}`} style={styles.gabaritoItem}>
+            <Text style={styles.gabaritoNumber}>{String(idx + 1).padStart(2, '0')}.</Text>
+            <Text>{question.correctAlternative || '-'}</Text>
+          </View>
+        ))}
+      </View>
+    </View>
+  </Page>
 );
 
 const Simulado = ({ questions }) => {
@@ -200,9 +260,10 @@ const Simulado = ({ questions }) => {
     return [...questions];
   }, [questions]);
 
-  // Split questions into two columns for stability
-  const leftColumn = sortedQuestions.filter((_, i) => i % 2 === 0);
-  const rightColumn = sortedQuestions.filter((_, i) => i % 2 !== 0);
+  const pages = useMemo(
+    () => distributeQuestions(sortedQuestions),
+    [sortedQuestions]
+  );
 
   if (sortedQuestions.length === 0) {
     return (
@@ -216,37 +277,14 @@ const Simulado = ({ questions }) => {
 
   return (
     <Document>
-      <Page size="A4" style={styles.page}>
-        <SimuladoHeader />
-
-        <View style={styles.columnsContainer}>
-          {/* Left Column */}
-          <View style={styles.column}>
-            {leftColumn.map((q, i) => (
-              <QuestionBlock key={i} question={q} index={sortedQuestions.indexOf(q)} />
-            ))}
-          </View>
-
-          {/* Right Column */}
-          <View style={styles.column}>
-            {rightColumn.map((q, i) => (
-              <QuestionBlock key={i} question={q} index={sortedQuestions.indexOf(q)} />
-            ))}
-          </View>
-        </View>
-
-        <View style={styles.gabaritoSection} break>
-          <Text style={styles.gabaritoTitle}>GABARITO OFICIAL</Text>
-          <View style={styles.gabaritoGrid}>
-            {sortedQuestions.map((question, idx) => (
-              <View key={`gab-${idx}`} style={styles.gabaritoItem}>
-                <Text style={styles.gabaritoNumber}>{String(idx + 1).padStart(2, '0')}.</Text>
-                <Text>{question.correctAlternative || '-'}</Text>
-              </View>
-            ))}
-          </View>
-        </View>
-      </Page>
+      {pages.map((page, pageIndex) => (
+        <ExamPage
+          key={pageIndex}
+          leftItems={page.left}
+          rightItems={page.right}
+        />
+      ))}
+      <GabaritoPage questions={sortedQuestions} />
     </Document>
   );
 };

@@ -7,15 +7,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class QuestionMapper {
     public QuestionResponse toQuestionResponse(EnemApiQuestionResponse enemApiQuestionResponse) {
-        return new QuestionResponse(
-                enemApiQuestionResponse.title(),
-                enemApiQuestionResponse.discipline(),
-                enemApiQuestionResponse.year(),
-                enemApiQuestionResponse.correctAlternative(),
-                enemApiQuestionResponse.context(),
-                enemApiQuestionResponse.files(),
-                enemApiQuestionResponse.alternativesIntroduction(),
-                enemApiQuestionResponse.alternatives()
-        );
+        return QuestionResponse.builder()
+                .title(enemApiQuestionResponse.title())
+                .discipline(enemApiQuestionResponse.discipline())
+                .year(enemApiQuestionResponse.year())
+                .correctAlternative(enemApiQuestionResponse.correctAlternative())
+                .context(enemApiQuestionResponse.context())
+                .files(enemApiQuestionResponse.files())
+                .alternativesIntroduction(enemApiQuestionResponse.alternativesIntroduction())
+                .alternatives(enemApiQuestionResponse.alternatives())
+                .build();
     }
 }

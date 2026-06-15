@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { Buffer } from "buffer";
 import "./index.css";
 
@@ -6,7 +6,6 @@ import Simulado from "./Simulado.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Hero from "./components/Hero.jsx";
 import Countdown from "./components/Countdown.jsx";
-import LoadingSpinner from "./components/LoadingSpinner.jsx";
 import ContactModal from "./components/ContactModal.jsx";
 import SettingsModal from "./components/SettingsModal.jsx";
 import DownloadModal from "./components/DownloadModal.jsx";
@@ -58,18 +57,18 @@ function App() {
   return (
     <div className="min-h-screen bg-bg">
       <header>
-        <Navbar 
-          onContactClick={() => setActiveContact(true)} 
-          onSettingsClick={() => setActiveSettings(true)} 
+        <Navbar
+          onContactClick={() => setActiveContact(true)}
+          onSettingsClick={() => setActiveSettings(true)}
         />
       </header>
 
       <main className="flex flex-col justify-center items-center h-screen pt-20">
-        
+
         {activeContact && <ContactModal onClose={() => setActiveContact(false)} />}
-        
+
         {activeSettings && (
-          <SettingsModal 
+          <SettingsModal
             onClose={() => setActiveSettings(false)}
             linguagens={linguagens}
             setLinguagens={setLinguagens}
@@ -115,9 +114,9 @@ function App() {
         </section>
 
         {mutation.data && (
-          <DownloadModal 
-            pdfDocument={pdfDocument} 
-            onClose={() => mutation.reset()} 
+          <DownloadModal
+            pdfDocument={pdfDocument}
+            onClose={() => mutation.reset()}
           />
         )}
       </main>
@@ -127,9 +126,9 @@ function App() {
       </aside>
 
       {mutation.isError && (
-        <ErrorDialog 
-          error={mutation.error} 
-          onClose={() => mutation.reset()} 
+        <ErrorDialog
+          error={mutation.error}
+          onClose={() => mutation.reset()}
         />
       )}
     </div>

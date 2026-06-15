@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, Image, View, StyleSheet } from '@react-pdf/renderer';
 import { lexer } from 'marked';
+import { isValidImageUrl, resolveImageUrl } from '../utils/pdfLayout';
 
 const styles = StyleSheet.create({
   bold: {
@@ -15,6 +16,17 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     alignSelf: 'center'
   },
+  imageFallback: {
+    padding: 4,
+    borderWidth: 0.5,
+    borderColor: '#cc0000',
+    backgroundColor: '#fff0f0',
+    marginVertical: 4,
+  },
+  imageFallbackText: {
+    fontSize: 7,
+    color: '#cc0000',
+  },
   paragraph: {
     marginBottom: 6,
     display: 'flex',
@@ -26,6 +38,22 @@ const styles = StyleSheet.create({
     lineHeight: 1.3,
   }
 });
+
+const MarkdownImage = ({ href }) => {
+  const resolved = resolveImageUrl(href);
+
+  if (!resolved || !isValidImageUrl(resolved)) {
+    return (
+      <View style={styles.imageFallback}>
+        <Text style={styles.imageFallbackText}>
+          Imagem indisponível: {href || 'URL ausente'}
+        </Text>
+      </View>
+    );
+  }
+
+  return <Image src={resolved} style={styles.image} />;
+};
 
 /**
  * Renders Markdown content using @react-pdf/renderer components.
@@ -53,7 +81,7 @@ const MarkdownRenderer = ({ content, textStyle = {} }) => {
           case 'br':
             return <Text key={index}>{"\n"}</Text>;
           case 'image':
-            return <Image key={index} src={token.href} style={styles.image} />;
+            return <MarkdownImage key={index} href={token.href} />;
           default:
             return <Text key={index} style={combinedStyle}>{token.text || token.raw}</Text>;
         }
@@ -70,7 +98,7 @@ const MarkdownRenderer = ({ content, textStyle = {} }) => {
               </View>
             );
           case 'image':
-            return <Image key={index} src={token.href} style={styles.image} />;
+            return <MarkdownImage key={index} href={token.href} />;
           case 'space':
             return null;
           default:
@@ -82,7 +110,7 @@ const MarkdownRenderer = ({ content, textStyle = {} }) => {
     };
 
     return <View>{renderBlocks(tokens)}</View>;
-  } catch (error) {
+  } catch {
     return <Text style={[styles.text, textStyle]}>{content}</Text>;
   }
 };

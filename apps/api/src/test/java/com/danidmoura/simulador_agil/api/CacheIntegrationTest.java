@@ -48,7 +48,7 @@ public class CacheIntegrationTest {
         QuestionRequest questionRequest = QuestionRequest.builder()
                 .number(1)
                 .minYear(2020)
-                .maxYear(2023)
+                .maxYear(2020)
                 .enableCienciasNatureza(true)
                 .enableCienciasHumanas(true)
                 .enableLinguagens(true)
