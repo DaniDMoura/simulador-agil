@@ -21,7 +21,7 @@ public class SecurityConfig {
 
     private final List<String> allowedOrigins;
 
-    public SecurityConfig(@Value("${cors.allowed-origins:https://www.simulado.site,http://web}") List<String> allowedOrigins) {
+    public SecurityConfig(@Value("${cors.allowed-origins:http://localhost,https://simulador-agil.vercel.app,http://web}") List<String> allowedOrigins) {
         this.allowedOrigins = allowedOrigins;
     }
 

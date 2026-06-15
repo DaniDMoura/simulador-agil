@@ -70,7 +70,7 @@ npm run build       # production build → dist/
 The API CORS bean (`SecurityConfig.corsConfigurationSource`) allows:
 
 - `http://localhost`
-- `https://www.simulado.site`
+- `https://simulador-agil.vercel.app`
 - `http://web`
 
 It does **not** allow `http://localhost:5173`. If you run the Vite dev server directly, browser requests to `/api/questions` will be blocked by CORS unless you proxy them or update the allowed origins.
