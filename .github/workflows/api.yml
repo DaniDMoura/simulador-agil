@@ -62,30 +62,12 @@ jobs:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    permissions:
-      contents: write
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          persist-credentials: true
-
-      - name: Push API subtree to private repository
+      - name: Trigger Render Deploy Hook
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-          
-          # Create a temporary branch with only the apps/api history
-          git subtree split --prefix=apps/api -b api-deploy
-          
-          # Add the private API repository as a remote
-          git remote add api-repo "https://x-access-token:${API_REPO_TOKEN}@github.com/${API_REPO_OWNER}/${API_REPO_NAME}.git"
-          
-          # Push the subtree branch to the private repository
-          git push api-repo api-deploy:main --force
+          curl -X POST "${RENDER_DEPLOY_HOOK}" \
+            -H "Content-Type: application/json" \
+            -d '{"clearCache": true}'
         env:
-          API_REPO_TOKEN: ${{ secrets.API_REPO_TOKEN }}
-          API_REPO_OWNER: ${{ secrets.API_REPO_OWNER }}
-          API_REPO_NAME: ${{ secrets.API_REPO_NAME }}
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}

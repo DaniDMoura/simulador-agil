@@ -93,7 +93,7 @@ In Docker, nginx proxies `/api/*` to the API, so CORS is not an issue.
 Two path-based workflows run on GitHub Actions:
 
 - `.github/workflows/web.yml` — triggers on `apps/web/**` changes. Runs lint, tests, build, and deploys to Vercel.
-- `.github/workflows/api.yml` — triggers on `apps/api/**` changes. Runs Gradle tests, then pushes the `apps/api/` subtree to the private API repository so Render can deploy it.
+- `.github/workflows/api.yml` — triggers on `apps/api/**` changes. Runs Gradle tests, then triggers the Render deploy hook to deploy the API.
 
 ### Required GitHub Secrets
 
@@ -102,9 +102,7 @@ Two path-based workflows run on GitHub Actions:
 | `VERCEL_TOKEN` | Vercel personal access token |
 | `VERCEL_ORG_ID` | Vercel team / user ID |
 | `VERCEL_PROJECT_ID` | Vercel project ID |
-| `API_REPO_TOKEN` | GitHub PAT with `repo` scope for the private API repository |
-| `API_REPO_OWNER` | GitHub owner of the private API repository |
-| `API_REPO_NAME` | Name of the private API repository |
+| `RENDER_DEPLOY_HOOK` | Render deploy hook URL for the API service |
 
 ### How to obtain Vercel secrets
 
@@ -115,11 +113,13 @@ npx vercel projects          # copy id → VERCEL_PROJECT_ID
 npx vercel tokens create     # create token → VERCEL_TOKEN
 ```
 
-### How to obtain API_REPO_TOKEN
+### How to obtain RENDER_DEPLOY_HOOK
 
-1. GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)
-2. Generate new token with `repo` scope
-3. Add to this repository's secrets as `API_REPO_TOKEN`
+1. Go to [Render Dashboard](https://dashboard.render.com)
+2. Select your API service
+3. Go to **Settings** → **Deploy Hook**
+4. Copy the hook URL (e.g., `https://api.render.com/deploy/srv-xxx?key=yyy`)
+5. Add to this repository's secrets as `RENDER_DEPLOY_HOOK`
 
 ## Codebase notes
 
