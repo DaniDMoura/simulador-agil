@@ -4,6 +4,8 @@ import { fetchQuestions } from "../services/questionService";
 
 vi.mock("axios");
 
+const API_URL = import.meta.env.VITE_API_URL || "/api";
+
 describe("questionService", () => {
   it("calls axios.post with correct parameters", async () => {
     const mockData = [{ id: 1, text: "Question 1" }];
@@ -21,7 +23,7 @@ describe("questionService", () => {
 
     const result = await fetchQuestions(params);
 
-    expect(axios.post).toHaveBeenCalledWith("/api/questions", {
+    expect(axios.post).toHaveBeenCalledWith(`${API_URL}/questions`, {
       number: 10,
       minYear: 2010,
       maxYear: 2020,

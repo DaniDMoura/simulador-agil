@@ -77,6 +77,8 @@ jobs:
       - name: Build
         run: npm run build
         working-directory: apps/web
+        env:
+          VITE_API_URL: "https://api-simulado-generator.onrender.com/api"
 
       - name: Install Vercel CLI
         run: npm install -g vercel
