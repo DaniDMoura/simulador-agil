@@ -6,7 +6,7 @@
   [![API CI](https://github.com/DaniDMoura/SimuladorAgil/actions/workflows/api.yml/badge.svg)](https://github.com/DaniDMoura/SimuladorAgil/actions/workflows/api.yml)
   [![Web CI](https://github.com/DaniDMoura/SimuladorAgil/actions/workflows/web.yml/badge.svg)](https://github.com/DaniDMoura/SimuladorAgil/actions/workflows/web.yml)
   [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-  [![Website](https://img.shields.io/website?url=https%3A%2F%2Fsimulado.site&style=flat)](https://simulado.site)
+  [![Website](https://img.shields.io/website?url=https%3A%2F%2Fsimulado.site&style=flat)](https://simulado-agil.vercel.app)
 </div>
 
 ---
