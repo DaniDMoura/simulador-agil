@@ -8,8 +8,11 @@ on:
       - 'apps/web/**'
       - '.github/workflows/web.yml'
   pull_request:
+    branches:
+      - main
     paths:
       - 'apps/web/**'
+      - '.github/workflows/web.yml'
 
 # Cancel in-progress runs when a new commit is pushed.
 concurrency:

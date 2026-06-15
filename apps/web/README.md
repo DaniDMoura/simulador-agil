@@ -1,72 +1,42 @@
-# SimuladorAgil Client
+# SimuladorÁgil Web
 
-This folder contains the frontend for **SimuladorAgil**, a web application for generating and taking personalized ENEM practice exams ("simulados"). The client is built with modern JavaScript, using [Vite](https://vitejs.dev/) as the build tool.
+Frontend do **SimuladorÁgil**, aplicação web para geração de simulados personalizados do ENEM. Construído com React 19 e Vite.
 
-## Features
+## Stack
 
-- Fast, modern frontend with Vite
-- React-based UI (assumed based on standard frontend structure)
-- Responsive design for use on desktop and mobile
-- Communicates with the FastAPI backend to fetch and submit simulado data
+- React 19 + Vite 6
+- Tailwind CSS v4
+- Vitest + Testing Library
+- PWA (vite-plugin-pwa)
+- Axios + TanStack Query
+- @react-pdf/renderer (PDF) + marked (Markdown)
 
-## Requirements
+## Requisitos
 
-- Node.js >= 18 (recommended)
-- npm >= 9 or [pnpm](https://pnpm.io/) (optional)
+- Node.js >= 20
+- npm >= 9
 
-## Installation
-
-1. Navigate to the `client` directory:
-
-   ```bash
-   cd client
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   npm install
-   # or
-   pnpm install
-   ```
-
-## Running the Client (Development)
-
-Start the development server:
+## Desenvolvimento
 
 ```bash
+cd apps/web
+npm install
 npm run dev
-# or
-pnpm dev
 ```
 
-The app will be available at [http://localhost:5173](http://localhost:5173) by default.
+O servidor de desenvolvimento inicia em `http://localhost:5173`.
 
-## Building for Production
+> ⚠️ Veja [`docs/development.md`](../../docs/development.md) sobre o gotcha de CORS com o dev server.
 
-To build the app for production:
+## Scripts úteis
 
-```bash
-npm run build
-# or
-pnpm build
-```
+| Script | Descrição |
+|--------|-----------|
+| `npm run dev` | Servidor de desenvolvimento |
+| `npm run build` | Build de produção → `dist/` |
+| `npm run test` | Testes com Vitest (run once) |
+| `npm run lint` | ESLint + Stylelint |
 
-The output will be in the `dist/` folder.
+## Licença
 
-## Project Structure
-
-- `public/` — Static assets
-- `src/` — Main source code (components, pages, styles, etc.)
-- `index.html` — HTML entry point
-- `package.json` — Project metadata and scripts
-- `vite.config.js` — Vite configuration
-- `.gitignore`, `eslint.config.js` — Development tooling
-
-## License
-
-Distributed under the GNU GPL v3.0. See the root [LICENSE](../LICENSE) file for details.
-
----
-
-Feel free to contribute or open issues!
+MIT. Veja o arquivo [LICENSE](../../LICENSE) na raiz do projeto.

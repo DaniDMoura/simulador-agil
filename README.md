@@ -2,173 +2,76 @@
   <img width="192" src="apps/web/public/icons/icon-192.png" alt="Logo SimuladorÁgil">
   <h1>Simulador<b>Ágil</b></h1>
   <p>Simulador inteligente que gera simulados personalizados do ENEM</p>
-  <a href="https://www.instagram.com/danilosmoura_/" target="_blank">
-    <img src="https://img.shields.io/badge/Instagram-Follow_@danilosmoura_-E4405F?style=for-the-badge&logo=instagram&logoColor=white" alt="Instagram">
-  </a>
-  <a href="https://simulado-agil.vercel.app">
-    <img src="https://img.shields.io/website?url=https%3A%2F%2Fsimulado.site&style=for-the-badge" alt="Online">
-  </a>
+
+  [![API CI](https://github.com/DaniDMoura/SimuladorAgil/actions/workflows/api.yml/badge.svg)](https://github.com/DaniDMoura/SimuladorAgil/actions/workflows/api.yml)
+  [![Web CI](https://github.com/DaniDMoura/SimuladorAgil/actions/workflows/web.yml/badge.svg)](https://github.com/DaniDMoura/SimuladorAgil/actions/workflows/web.yml)
+  [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+  [![Website](https://img.shields.io/website?url=https%3A%2F%2Fsimulado.site&style=flat)](https://simulado.site)
 </div>
 
 ---
 
-## Sobre o Projeto
+## 🚀 Quick Start
 
-O **SimuladorÁgil** é um simulador inteligente que gera simulados personalizados do ENEM em tempo real. O objetivo é proporcionar uma experiência de preparação otimizada, oferecendo questões adaptadas ao desempenho e às preferências do usuário, com foco em uma experiência visual moderna e profissional.
-
----
-
-## Estrutura do Projeto
-
-```
-simulador-agil/
-├── apps/
-│   ├── api/          # Backend (Java/Spring Boot 4.0)
-│   └── web/          # Frontend (React + Vite + Vitest)
-├── scripts/
-│   └── setup.sh      # Script de configuração automática
-├── docker-compose.yml
-├── README.md
-└── LICENSE
-```
-
----
-
-## Índice
-
-- [Demonstração](#demonstração)
-- [Arquitetura e Tecnologias](#arquitetura-e-tecnologias)
-- [Funcionalidades](#funcionalidades)
-- [Como Usar](#como-usar)
-- [Como rodar com Docker](#como-rodar-com-docker)
-- [Como Contribuir](#como-contribuir)
-- [Licença](#licença)
-- [Contato](#contato)
-
----
-
-## Demonstração
-
-- Acesse a versão online: [https://simulado.site](https://simulado.site)
-
----
-
-## Arquitetura e Tecnologias
-
-### Backend (API)
-
-- **Linguagem:** Java (JDK 25)
-- **Framework:** Spring Boot 4.0
-- **Resiliência:** Spring Retry para chamadas de integração
-- **Cache:** Redis
-- **Segurança:** Spring Security com Rate Limiting e RFC 7807 (Problem Details)
-
-### Frontend
-
-- **Linguagem:** JavaScript
-- **Framework:** React 19
-- **Build Tool:** Vite
-- **Testes:** Vitest + React Testing Library
-- **Principais Bibliotecas:**
-  - **axios:** requisições HTTP
-  - **tanstack/react-query:** gerenciamento de estado assíncrono
-  - **@react-pdf/renderer:** geração dinâmica de PDF
-  - **marked:** renderização robusta de Markdown para questões
-
----
-
-##  Funcionalidades
-
-- **Simulados Personalizados:** Geração dinâmica com base em filtros de ano e área de conhecimento.
-- **Banco de Questões do ENEM:** Utiliza questões reais do ENEM com renderização nativa de Markdown e imagens.
-- **Relatórios em PDF Profissionais:** Exportação com layout otimizado em 2 colunas para impressão.
-- **Feedback de Erro Detalhado:** Sistema de tratamento de erros baseado no padrão RFC 7807 para mensagens claras de validação.
-- **Interface Moderna:** Design UX focado em produtividade com sistema de tipografia dual-font (Serif/Sans-serif).
-
----
-
-## Como Usar
-
-### 1. Versão Online
-
-Acesse diretamente pelo navegador: [https://simulado.site](https://simulado.site)
-
-### 2. Executar Localmente
-
-#### Pré-requisitos
-
-- [Node.js](https://nodejs.org/) (>= v20)
-- [npm](https://www.npmjs.com/)
-- [Java](https://www.oracle.com/java/technologies/downloads/) (>= 25)
-
-#### Instalação Rápida
+A maneira mais rápida de rodar o projeto localmente é com **Docker Compose**:
 
 ```bash
-# Clone o repositório
 git clone https://github.com/DaniDMoura/SimuladorAgil.git
 cd SimuladorAgil
 
-# Execute o script de setup
-bash scripts/setup.sh
-```
+# Copie as variáveis de ambiente (opcional — valores default já funcionam)
+cp .env.example .env
 
-#### Executando o projeto
-
-```bash
-# Terminal 1 - API (Java/Spring Boot)
-cd apps/api
-./gradlew bootRun
-
-# Terminal 2 - Web
-cd apps/web
-npm run dev
-```
-
-#### Executando Testes
-
-```bash
-# No diretório apps/web
-npm run test
-```
-
----
-
-## Como rodar com Docker
-
-### 1. Pré-requisitos
-
-- [Docker](https://www.docker.com/) e [Docker Compose](https://docs.docker.com/compose/)
-
-### 2. Rodando com Docker Compose
-
-```bash
+# Suba tudo (backend, frontend, Redis)
 docker compose up --build
 ```
 
-- **Frontend:** [http://localhost](http://localhost)
-- **Backend:** [http://localhost:8080](http://localhost:8080)
+- **Frontend:** http://localhost
+- **Backend:** http://localhost:8080
+- **Health:** http://localhost:8080/actuator/health
+
+> Para desenvolvimento ativo (hot-reload), veja [docs/development.md](docs/development.md).
 
 ---
 
-## Como Contribuir
+## 📋 Stack Tecnológica
 
-1. Faça um fork do projeto.
-2. Crie uma branch para sua feature (`git checkout -b feature/minha-feature`).
-3. Siga o padrão **Conventional Commits**.
-4. Abra um Pull Request.
-
----
-
-## Licença
-
-Distribuído sob a Licença MIT.
+| Camada | Tecnologia |
+|--------|-----------|
+| **Frontend** | React 19 · Vite 6 · Vitest · Tailwind CSS v4 · PWA |
+| **Backend** | Java 25 · Spring Boot 4.0 · Gradle · OpenFeign · Spring Retry |
+| **Cache** | Redis (com fallback para cache em memória) |
+| **Infra** | Docker · Nginx · GitHub Actions |
 
 ---
 
-## Contato
+## 📚 Documentação
 
-- **Desenvolvedor:** [@DaniDMoura](https://github.com/DaniDMoura)
-- **Suporte:** Abra uma [issue](https://github.com/DaniDMoura/SimuladorAgil/issues).
+- **[Arquitetura](docs/architecture.md)** — como frontend, backend e Redis interagem.
+- **[Decisões Arquiteturais](docs/decisions.md)** — por que Redis, por que Spring Retry, trade-offs.
+- **[Desenvolvimento Local](docs/development.md)** — rodando backend e frontend separados, testes, lint.
+- **[Como Contribuir](CONTRIBUTING.md)** — setup, commits, testes e processo de PR.
+
+---
+
+## 🛡️ Segurança & Qualidade
+
+- Rate limiting (30 req/min) na API e no Nginx.
+- CI roda em todo PR para `main`: testes, lint e build.
+- Dependabot e CodeQL monitoram vulnerabilidades.
+- Erros estruturados seguindo **RFC 7807** (Problem Details).
+
+---
+
+## 🌐 Demonstração
+
+Acesse a versão online: **[https://simulado.site](https://simulado.site)**
+
+---
+
+## 📄 Licença
+
+Distribuído sob a [Licença MIT](LICENSE).
 
 ---
 

@@ -5,7 +5,7 @@ set -e
 PROJECT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 
 echo "========================================"
-echo "  Simulador Agil - Setup Script"
+echo "  SimuladorÁgil — Setup Script"
 echo "========================================"
 echo ""
 
@@ -13,7 +13,7 @@ echo ""
 echo "[1/5] Checking prerequisites..."
 
 if ! command -v node &> /dev/null; then
-  echo "  ERROR: Node.js is not installed. Install it from https://nodejs.org/"
+  echo "  ERROR: Node.js is not installed. Install it from https://nodejs.org/ (>= 20)"
   exit 1
 fi
 echo "  Node.js: $(node --version)"
@@ -24,15 +24,10 @@ if ! command -v npm &> /dev/null; then
 fi
 echo "  npm: $(npm --version)"
 
-if ! command -v python3 &> /dev/null; then
-  echo "  ERROR: Python 3 is not installed."
-  exit 1
-fi
-echo "  Python: $(python3 --version)"
-
-if ! command -v poetry &> /dev/null; then
-  echo "  WARNING: Poetry is not installed. Install it for the backend:"
-  echo "    curl -sSL https://install.python-poetry.org | python3 -"
+if ! command -v java &> /dev/null; then
+  echo "  WARNING: Java is not installed. Gradle will auto-provision JDK 25 via toolchain, but having a local JDK speeds things up."
+else
+  echo "  Java: $(java -version 2>&1 | head -n 1)"
 fi
 
 if command -v docker &> /dev/null; then
@@ -70,15 +65,8 @@ echo ""
 echo "[4/5] Installing backend dependencies..."
 
 cd "$PROJECT_ROOT/apps/api"
-
-if command -v poetry &> /dev/null; then
-  poetry install
-  echo "  Backend dependencies installed with Poetry."
-else
-  echo "  Poetry not found. Install manually:"
-  echo "    cd $PROJECT_ROOT/apps/api"
-  echo "    poetry install"
-fi
+./gradlew dependencies --quiet 2>/dev/null || ./gradlew --quiet
+echo "  Backend dependencies resolved with Gradle."
 
 echo ""
 
@@ -89,14 +77,15 @@ echo "========================================"
 echo "  How to run the project:"
 echo "========================================"
 echo ""
-echo "  Option 1 - Development mode:"
+echo "  Option 1 — Docker (recommended for quick start):"
+echo "    docker compose up --build"
+echo ""
+echo "  Option 2 — Development mode (separate terminals):"
 echo "    # Terminal 1 (API):"
-echo "    cd apps/api && poetry run uvicorn simulado_gen.main:app --reload"
+echo "    cd apps/api && ./gradlew bootRun"
 echo ""
 echo "    # Terminal 2 (Web):"
 echo "    cd apps/web && npm run dev"
 echo ""
-echo "  Option 2 - Docker:"
-echo "    docker compose up --build"
-echo ""
+echo "  See docs/development.md for detailed instructions."
 echo "========================================"

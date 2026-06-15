@@ -1,0 +1,30 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Generate release notes
+        id: notes
+        run: |
+          echo "RELEASE_BODY<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$(sed -n '/^## \['"${GITHUB_REF_NAME}"'\]/,/^## \[/p' CHANGELOG.md | head -n -1)" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: ${{ steps.notes.outputs.RELEASE_BODY }}
+          generate_release_notes: true
