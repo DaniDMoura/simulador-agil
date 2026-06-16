@@ -21,7 +21,7 @@
     "lucide-react": "^0.513.0",
     "marked": "^18.0.2",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0",
+    "react-dom": "^19.2.7",
     "tailwindcss": "^4.1.8"
   },
   "devDependencies": {
@@ -32,7 +32,7 @@
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/react": "^19.1.2",
-    "@types/react-dom": "^19.1.2",
+    "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react-swc": "^4.3.1",
     "eslint": "^9.25.0",
     "eslint-plugin-react-hooks": "^5.2.0",
